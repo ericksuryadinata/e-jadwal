@@ -2,16 +2,21 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Front extends CI_Controller {
-	public function index(){
+
+    public function index(){
+        $this->load->view('index');
+    }
+
+	public function jadwal_dosen(){
         $prodi = $this->front->getAllProdi();
         if($prodi->num_rows() > 0){
             $data['jurusan'] = $prodi->result();
         }
-		$this->load->view('index',$data);
+		$this->load->view('jadwal_dosen',$data);
     }
     
-    public function tu(){
-        $this->load->view('tu');
+    public function jadwal_tata_usaha(){
+        $this->load->view('jadwal_tu');
     }
 
     public function bimbingan_dosen(){
