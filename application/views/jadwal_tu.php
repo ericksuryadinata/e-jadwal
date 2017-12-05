@@ -14,16 +14,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <?php $this->load->view('Partials/Front/Head');?>
   </head>
   <style type="text/css">
-    table.table-bordered{
-      border:1px solid black;
-      margin-top:20px;
-    }
-    table.table-bordered > thead > tr > th{
-      border:1px solid black;
-    }
-    table.table-bordered > tfoot > tr > th{
-      border:1px solid black;
-    }
+    
     table{
       border-radius: 4px;
     }
@@ -63,8 +54,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     }
 
     #top{
-      margin-top: 50px;
+      padding-top: 3rem;
     }
+
   </style>
   <body id="body">
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
@@ -88,7 +80,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <!-- Header -->
     <section class="container" id="top">
       <div class="container">
-        <div class="text-center">
+        <div class="text-center space">
           <h1>Jadwal Tata Usaha Fakultas Teknik</h1>
           <h3>Universitas 17 Agustus 1945 Surabaya</h3>
           <div class="row">
@@ -109,6 +101,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         </div>  
       </div>
     </section>
+    <!-- Footer -->
+    <footer class="footer text-center">
+      <div class="container">
+        <p class="text-muted small mb-0">Copyright &copy; Fakultas Teknik 2017</p>
+      </div>
+    </footer>
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded js-scroll-trigger" href="#top">
+      <i class="fa fa-angle-up"></i>
+    </a>
     <?php $this->load->view('Partials/Front/Foot');?>
   </body>
   <script>
@@ -126,6 +129,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         language:{
           emptyTable: "Data Kosong",
           processing: "Sedang Mencari",
+          lengthMenu: "Menampilkan _MENU_ data",
+          zeroRecords: "Data Kosong",
+          info: "Halaman _PAGE_ dari _PAGES_ halaman",
+          infoEmpty: "Data Kosong",
+          infoFiltered: "(Disaring dari _MAX_ total data)",
+          paginate: {
+              "next":       "Berikutnya",
+              "previous":   "Sebelumnya"
+          },
         },
         iDisplayLength : '50',
         stripeClasses: ['table-active','table-default'],
