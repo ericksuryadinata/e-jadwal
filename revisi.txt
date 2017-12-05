@@ -1,0 +1,6 @@
+membuat chrome kiosk
+butuh keyboard kiosk
+membuat screen saver ketika lima menit iddle
+membuat UI untuk informasi jadwal dll
+untuk semua form harus masuk ke screen saver ketika iddle selama 5 menit
+
