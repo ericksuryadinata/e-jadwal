@@ -1,6 +1,9 @@
-membuat chrome kiosk
-butuh keyboard kiosk
-membuat screen saver ketika lima menit iddle
-membuat UI untuk informasi jadwal dll
-untuk semua form harus masuk ke screen saver ketika iddle selama 5 menit
+CHANGELOG
+1. UI udah dibuat
+
+NOT YET
+1. membuat chrome kiosk (pake parameter --kiosk, udah oke. tapi kalau pakai keyboard bakal interupt alt + f4)
+2. butuh keyboard kiosk (touch keyboard kiosk ini sebagai extensions, udah ada di chrome store)
+3. membuat screen saver ketika lima menit iddle (wait a bit, ini jquery ontouch sama kayak onclick ?)
+4. untuk semua form harus masuk ke screen saver ketika iddle selama 5 menit (nunggu nomer 3)
 

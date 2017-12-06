@@ -58,25 +58,25 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     }
   </style>
   <body id="body">
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
-    <div class="container">
-      <a class="navbar-brand js-scroll-trigger" href="#">Fakultas Teknik</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarResponsive">
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="<?php echo base_url('front/jadwal_dosen');?>">Jadwal Dosen</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="<?php echo base_url('front/jadwal_tata_usaha');?>">Jadwal Tata Usaha</a>
-          </li>
-        </ul>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
+      <div class="container">
+        <a class="navbar-brand js-scroll-trigger" href="<?php echo base_url()?>">Fakultas Teknik</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="<?php echo base_url('front/jadwal_dosen');?>">Jadwal Dosen</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="<?php echo base_url('front/jadwal_tata_usaha');?>">Jadwal Tata Usaha</a>
+            </li>
+          </ul>
+        </div>
       </div>
-    </div>
-  </nav>
-    <!-- Header -->
+    </nav>
+      <!-- Header -->
     <section class="container" id="top">
       <div class="container">
           <div class="text-center space">

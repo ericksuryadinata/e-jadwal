@@ -60,25 +60,25 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     }
   </style>
   <body id="body">
-  <!-- Navigation -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
-    <div class="container">
-      <a class="navbar-brand js-scroll-trigger" href="#">Fakultas Teknik</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarResponsive">
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="<?php echo base_url('front/jadwal_tata_usaha');?>">Jadwal Tata Usaha</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="<?php echo base_url('front/bimbingan_dosen');?>">Jadwal Bimbingan Dosen</a>
-          </li>
-        </ul>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
+      <div class="container">
+        <a class="navbar-brand js-scroll-trigger" href="<?php echo base_url()?>">Fakultas Teknik</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="<?php echo base_url('front/jadwal_tata_usaha');?>">Jadwal Tata Usaha</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="<?php echo base_url('front/bimbingan_dosen');?>">Jadwal Bimbingan Dosen</a>
+            </li>
+          </ul>
+        </div>
       </div>
-    </div>
-  </nav>
+    </nav>
     <section class="container" id="top">
       <div class="container">
           <div class="space text-center">
