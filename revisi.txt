@@ -1,5 +1,5 @@
 CHANGELOG
-1. UI udah dibuat
+1. UI buat index udah dibuat
 
 NOT YET
 1. membuat chrome kiosk (pake parameter --kiosk, udah oke. tapi kalau pakai keyboard bakal interupt alt + f4)
