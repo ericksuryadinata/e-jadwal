@@ -111,6 +111,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             fg: '#eceeef',
             text: 'Thumbnail'
           });
+
+          $(document).idle({
+            onIdle: function(){
+                //bakal dipanggil screen saver, cara manggilnya ? entar aja
+            },
+            idle: 300000 //5 menit, default : 60000 [1m]
+          });
         </script>
       </body>
     </html>

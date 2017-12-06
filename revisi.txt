@@ -1,10 +1,14 @@
 CHANGELOG
 1. UI buat index udah dibuat
+2. membuat screen saver ketika lima menit idle 
+    --> untuk idle sudah diset, tinggal menunggu kolaborasi dengan screen saver
 
 NOT YET
-1. membuat chrome kiosk (pake parameter --kiosk, udah oke. tapi kalau pakai keyboard bakal interupt alt + f4)
-2. butuh keyboard kiosk (touch keyboard kiosk ini sebagai extensions, udah ada di chrome store)
-3. membuat screen saver ketika lima menit iddle (wait a bit, ini jquery ontouch sama kayak onclick ?)
+1. membuat chrome kiosk (pake parameter --kiosk atau pakai extensions (?). tapi kalau pakai keyboard bakal interupt alt + f4)
+2. butuh keyboard kiosk (touch keyboard kiosk ini ada extensionsnya, udah ada di chrome store)
+3. membuat screen saver kembali lagi setelah idle
+    --> solusi untuk ini sementara $(document).on('click touch', function () {});
 4. untuk semua form harus masuk ke screen saver ketika iddle selama 5 menit (nunggu nomer 3)
+    --> logicnya ada di javascript index.php
 5. semacam animasi, biar lebih atraktif, loader ? atau apa gitu ?
 
