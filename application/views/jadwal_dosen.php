@@ -70,6 +70,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="<?php echo base_url();?>">Menu Utama</a>
+            </li>
+            <li class="nav-item">
               <a class="nav-link js-scroll-trigger" href="<?php echo base_url('front/jadwal_tata_usaha');?>">Jadwal Tata Usaha</a>
             </li>
             <li class="nav-item">
@@ -193,6 +196,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
               "previous":   "Sebelumnya"
           },
         },
+        scrollY: "325px",
+        scrollCollapse: true,
         searching:false,
         stripeClasses: ['table-active','table-default'],
         processing: true,
@@ -277,6 +282,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                       "previous":   "Sebelumnya"
                   },
                 },
+                scrollY: "325px",
+                scrollCollapse: true,
                 stripeClasses: ['table-active','table-default'],
                 searching : false,
                 processing: true,
@@ -327,6 +334,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 "previous":   "Sebelumnya"
             },
           },
+          scrollY: "325px",
+          scrollCollapse: true,
           stripeClasses: ['table-active','table-default'],
           searching : false,
           processing: true,
@@ -372,6 +381,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 "previous":   "Sebelumnya"
             },
           },
+          scrollY: "325px",
+          scrollCollapse: true,
           stripeClasses: ['table-active','table-default'],
           searching : false,
           processing: true,
@@ -437,6 +448,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 "previous":   "Sebelumnya"
             },
           },
+          scrollY: "325px",
+          scrollCollapse: true,
           stripeClasses: ['table-active','table-default'],
           searching : false,
           processing: true,

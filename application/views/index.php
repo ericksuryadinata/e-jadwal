@@ -26,7 +26,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             <div class="album text-muted">
                 <div class="container">
                     <div class="row">
-                        <div class="col-6 col-md-4">
+                        <div class="col-md-4 col-sm-4">
                             <div class="card text-center" style="width: 20rem;">
                                 <div class="card-body">
                                     <h4 class="card-title">Jadwal Dosen</h4>
@@ -37,7 +37,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 </div>
                             </div>
                         </div>
-                        <div class="col-6 col-md-4">
+                        <div class="col-md-4 col-sm-4">
                             <div class="card text-center" style="width: 20rem;">
                                 <div class="card-body">
                                     <h4 class="card-title">Jadwal Tata Usaha</h4>
@@ -48,7 +48,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 </div>
                             </div>
                         </div>
-                        <div class="col-6 col-md-4">
+                        <div class="col-md-4 col-sm-4">
                             <div class="card text-center" style="width: 20rem;">
                                 <div class="card-body">
                                     <h4 class="card-title">Jadwal Bimbingan Dosen</h4>
@@ -61,7 +61,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-6 col-md-4">
+                        <div class="col-md-4 col-sm-4">
                             <div class="card text-center" style="width: 20rem;">
                                 <div class="card-body">
                                     <h4 class="card-title">Data Dosen</h4>
@@ -72,7 +72,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 </div>
                             </div>
                         </div>
-                        <div class="col-6 col-md-4">
+                        <div class="col-md-4 col-sm-4">
                             <div class="card text-center" style="width: 20rem;">
                                 <div class="card-body">
                                     <h4 class="card-title">Surat - Surat</h4>
@@ -83,7 +83,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 </div>
                             </div>
                         </div>
-                        <div class="col-6 col-md-4">
+                        <div class="col-md-4 col-sm-4">
                             <div class="card text-center" style="width: 20rem;">
                                 <div class="card-body">
                                     <h4 class="card-title">Keluhan</h4>
@@ -106,17 +106,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         </main>
         <?php $this->load->view('Partials/Front/Foot');?>
         <script>
-          Holder.addTheme('thumb', {
-            bg: '#55595c',
-            fg: '#eceeef',
-            text: 'Thumbnail'
-          });
-
           $(document).idle({
             onIdle: function(){
-                //bakal dipanggil screen saver, cara manggilnya ? entar aja
+                //alert("idle");//bakal dipanggil screen saver, cara manggilnya ? entar aja
             },
-            idle: 300000 //5 menit, default : 60000 [1m]
+            idle: 10000 //5 menit, default : 60000 [1m]
           });
         </script>
       </body>

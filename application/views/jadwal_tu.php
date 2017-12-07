@@ -68,6 +68,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="<?php echo base_url();?>">Menu Utama</a>
+            </li>
+            <li class="nav-item">
               <a class="nav-link js-scroll-trigger" href="<?php echo base_url('front/jadwal_dosen');?>">Jadwal Dosen</a>
             </li>
             <li class="nav-item">
@@ -131,7 +134,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
           processing: "Sedang Mencari",
           lengthMenu: "Menampilkan _MENU_ data",
           zeroRecords: "Data Kosong",
-          info: "Halaman _PAGE_ dari _PAGES_ halaman",
           infoEmpty: "Data Kosong",
           infoFiltered: "(Disaring dari _MAX_ total data)",
           paginate: {
@@ -139,7 +141,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
               "previous":   "Sebelumnya"
           },
         },
-        iDisplayLength : '50',
+        scrollY: "325px",
+        scrollCollapse: true,
+        paging: false,
         stripeClasses: ['table-active','table-default'],
         lengthChange : false,
         searching : false,
