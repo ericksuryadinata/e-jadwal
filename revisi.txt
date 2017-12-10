@@ -2,6 +2,7 @@ CHANGELOG
 1. UI buat index udah dibuat
 2. membuat screen saver ketika lima menit idle 
     --> untuk idle sudah diset, tinggal menunggu kolaborasi dengan screen saver
+3. Jadwal tata usaha sudah pakai inputan
 
 NOT YET
 1. membuat chrome kiosk (pake parameter --kiosk atau pakai extensions (?). tapi kalau pakai keyboard bakal interupt alt + f4)

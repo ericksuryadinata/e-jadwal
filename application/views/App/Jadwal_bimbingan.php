@@ -99,7 +99,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             <label class="control-label col-md-3">Hari</label>
                             <div class="col-md-9">
                                 <select class="form-control" id="hari" name="hari" required>
-                                    <option value="0">-- PILIH HARI --</option>
+                                    <option value="">-- PILIH HARI --</option>
                                     <option value="senin">senin</option>
                                     <option value="selasa">selasa</option>
                                     <option value="rabu">rabu</option>
@@ -252,7 +252,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         {
                             $('#bimbingan_modal').modal('hide');
                             $("#refresh").trigger('click');
-                            if(save_method == 'tambah'){
+                            if(sm == 'tambah'){
                                 swal("Sukses", "Penambahan data sukses", "success");
                             }else{
                                 swal("Sukses", "Perubahan data sukses", "success");

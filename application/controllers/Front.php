@@ -85,14 +85,16 @@ class Front extends CI_Controller {
         $list = $this->front->get_jadwal_tu();
         $data = array();
         $no = $_POST['start'];
-        foreach ($list as $jadwal) {
+        foreach ($list as $jadwal_tu) {
             $no++;
             $row = array();
             $row[] = $no;
-            $row[] = $jadwal->nama_jurusan;
-            $row[] = $jadwal->kode_tu;
-            $row[] = $jadwal->nama_tu;
-            $row[] = $jadwal->jadwal;
+            $row[] = $jadwal_tu->nama_jurusan;
+            $row[] = $jadwal_tu->kode_tata_usaha;
+            $row[] = $jadwal_tu->nama_tu;
+            $hari = $jadwal_tu->hari;
+            $jam = $jadwal_tu->jam;
+            $row[] = $hari.', '.$jam;
             $data[] = $row;
         }
         $output = array("draw"=>$_POST['draw'],

@@ -150,14 +150,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     </a>
     <?php $this->load->view('Partials/Front/Foot');?>
   </body>
-  <script>
-  shortcut.add("Alt+F1",function() {
-    location.replace("<?php echo site_url('MP_Back')?>");
-  });
-  shortcut.add("Alt+F2",function() {
-    location.replace("<?php echo site_url('Front/tu')?>");
-  });
-  </script>
   <script type="text/javascript">
     var table;
     $(document).ready(function() {

@@ -3,30 +3,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class MP_Back extends CI_Controller {
 
+    /** 
+     *  jadwal dosen 
+    **/
+
 	public function index(){
 		$data['pesan'] = $this->session->userdata('p');
 		$this->load->view('App/index',$data);
         $this->load->view('App/Jadwal');
         $this->load->view('App/Footer');
-	}
-
-    public function jadwal_tu(){
-        $data['pesan'] = $this->session->userdata('p');
-        $this->load->view('App/index',$data);
-        $this->load->view('App/Jadwal_tu');
-        $this->load->view('App/Footer');
     }
 
-    public function jadwal_bimbingan(){
-        $data['pesan'] = $this->session->userdata('p');
-        $prodi = $this->mp->getAllProdi();
-        if($prodi->num_rows() > 0){
-            $data['jurusan'] = $prodi->result();
-        }
-        $this->load->view('App/index',$data);
-        $this->load->view('App/Jadwal_bimbingan');
-        $this->load->view('App/Footer');
-    }
 	public function upload_excel_jadwal(){
         if( !isset($_FILES['file']['name']) || empty($_FILES['file']['name'])){
             $this->session->set_flashdata("p",'<script>swal("Error", "File Belum Dipilih", "error")</script>');
@@ -127,6 +114,21 @@ class MP_Back extends CI_Controller {
         echo json_encode($output);
     }
 
+    /** 
+     *  jadwal tata usaha
+    **/
+    
+    public function jadwal_tu(){
+        $data['pesan'] = $this->session->userdata('p');
+        $prodi = $this->mp->getAllProdi();
+        if($prodi->num_rows() > 0){
+            $data['jurusan'] = $prodi->result();
+        }
+        $this->load->view('App/index',$data);
+        $this->load->view('App/Jadwal_tu');
+        $this->load->view('App/Footer');
+    }
+
     public function upload_excel_tu(){
         if( !isset($_FILES['file']['name']) || empty($_FILES['file']['name'])){
             $this->session->set_flashdata("p",'<script>swal("Error", "File Belum Dipilih", "error")</script>');
@@ -174,9 +176,9 @@ class MP_Back extends CI_Controller {
                 //Sesuaikan sama nama kolom tabel di database                                
                  $data = array(
                     "fakjur"=> $rowData[0][0],
-                    "kode_tu"=> $rowData[0][1],
-                    "nama_tu"=> strtoupper($rowData[0][2]),
-                    "jadwal"=> $rowData[0][3]
+                    "kode_tata_usaha"=> $rowData[0][1],
+                    "hari"=> $rowData[0][2],
+                    "jam"=> $rowData[0][3]
                 );
                  
                 //sesuaikan nama dengan nama tabel
@@ -185,7 +187,7 @@ class MP_Back extends CI_Controller {
             }
             if($insert){
                 $this->session->set_flashdata("p",'<script>swal("Sukses", "Berhasil upload", "success")</script>');
-                redirect('MP_Back');
+                redirect('MP_Back/jadwal_tu');
             } else {
                 $this->session->set_flashdata("p",'<script>swal("Error", "Gagal Upload", "error")</script>');
                 redirect('MP_Back');
@@ -203,9 +205,12 @@ class MP_Back extends CI_Controller {
             $row[] = $no;
             $row[] = $jadwal_tu->fakjur;
             $row[] = $jadwal_tu->nama_jurusan;
-            $row[] = $jadwal_tu->kode_tu;
+            $row[] = $jadwal_tu->kode_tata_usaha;
             $row[] = $jadwal_tu->nama_tu;
-            $row[] = $jadwal_tu->jadwal;
+            $hari = $jadwal_tu->hari;
+            $jam = $jadwal_tu->jam;
+            $row[] = $hari.', '.$jam;
+            $row[] = '<a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Edit" onclick="update_jadwal_tu('."'".$jadwal_tu->id_jadwal_tu."'".')"><i class="glyphicon glyphicon-pencil"></i>&nbsp;Edit</a> <a class="btn btn-sm btn-danger" href="javascript:void(0)" title="Hapus" onclick="delete_jadwal_tu('."'".$jadwal_tu->id_jadwal_tu."'".')"><i class="glyphicon glyphicon-trash"></i>&nbsp;Delete</a>';
             $data[] = $row;
         }
         $output = array("draw"=>$_POST['draw'],
@@ -213,6 +218,87 @@ class MP_Back extends CI_Controller {
                         "recordsFiltered" => $this->mp->count_filtered_jadwal_tu(),
                         "data"=>$data);
         echo json_encode($output);
+    }
+
+    
+    public function kode_tu(){
+        if($_POST){
+            $kd = $this->security->xss_clean($this->input->post('prodi'));
+            $kodetu = array('kode_tu'=>$kd);
+            $q = $this->mp->ambil_like('tb_tatausaha',$kodetu,false,'after');
+            if($q->num_rows() > 0 ){
+                echo json_encode($q->result_array());
+            }else{
+                echo json_encode(null);
+            }
+        }else{
+            redirect('MP_Back');
+        }
+    }
+
+    public function tambah_jadwal_tu(){
+        if($_POST){
+            $data = array('fakjur'=>$this->security->xss_clean($this->input->post('prodi')),'kode_tata_usaha'=>$this->security->xss_clean($this->input->post('kodetu')),'hari'=>$this->security->xss_clean($this->input->post('hari')),
+            'jam'=>$this->security->xss_clean($this->input->post('jam')),
+            );
+            $insert = $this->mp->tambah_data('tb_jadwal_tu',$data);
+            echo json_encode(array('status'=>TRUE));
+        }else{
+            redirect('MP_Back');
+        }
+    }
+
+    public function update_jadwal_tu(){
+        if($_POST){
+            $data = array('fakjur'=>$this->security->xss_clean($this->input->post('prodi')),'kode_tata_usaha'=>$this->security->xss_clean($this->input->post('kodetu')),'hari'=>$this->security->xss_clean($this->input->post('hari')),
+            'jam'=>$this->security->xss_clean($this->input->post('jam')),
+            );
+            $where = array('id_jadwal_tu'=>$this->security->xss_clean($this->input->post('val')));
+            $update = $this->mp->update_tu($where,$data);
+            echo json_encode(array('status'=>TRUE));
+        }else{
+            redirect('MP_Back');
+        }
+    }
+
+    public function edit_jadwal_tu(){
+        if($_POST){
+            $id = $this->security->xss_clean($this->input->post('id_jadwal'));
+            $data = $this->mp->get_by_tu($id);
+            $kd = $data->fakjur;
+            $kodetu = array('kode_tu'=>$kd);
+            $q = $this->mp->ambil_like('tb_tatausaha',$kodetu,false,'after');
+            echo json_encode(array("edit"=>$data,"tu"=>$q->result_array()));    
+        } else {
+            redirect('MP_Back');
+        }
+    }
+
+    public function hapus_jadwal_tu()
+    {
+        if($_POST){
+            $id = array('id_jadwal_tu'=>$this->security->xss_clean($this->input->post('id_jadwal')));
+            $this->mp->delete('tb_jadwal_tu',$id);
+            echo json_encode(array('status'=>TRUE));
+        }else{
+            redirect('MP_Back');
+        }
+    }
+
+
+    /** 
+     *  jadwal bimbingan dosen
+    **/
+
+    public function jadwal_bimbingan(){
+        $data['pesan'] = $this->session->userdata('p');
+        $prodi = $this->mp->getAllProdi();
+        if($prodi->num_rows() > 0){
+            $data['jurusan'] = $prodi->result();
+        }
+        $this->load->view('App/index',$data);
+        $this->load->view('App/Jadwal_bimbingan');
+        $this->load->view('App/Footer');
     }
 
     public function kode_dosen(){
@@ -283,8 +369,6 @@ class MP_Back extends CI_Controller {
         }else{
             redirect('MP_Back');
         }
-        
-
     }
 
     public function update_bimbingan(){

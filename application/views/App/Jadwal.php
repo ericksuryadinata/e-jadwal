@@ -70,12 +70,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 </div>
 <?php echo $pesan ?>
 <script type="text/javascript">
-	shortcut.add("Alt+F1",function() {
-    	location.replace("<?php echo site_url('Front')?>");
-  	});
-	shortcut.add("Alt+F2",function() {
-		location.replace("<?php echo site_url('Front/tu')?>");
-	});
 	var table;
 	$(document).ready(function($) {
 		table = $('#dt-1').DataTable({

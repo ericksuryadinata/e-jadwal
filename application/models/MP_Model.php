@@ -8,8 +8,8 @@ class MP_Model extends CI_Model {
 	private $order_by_jadwal = array('tb_jadwal.kode_jurusan'=>'asc');
 
 	private $table_jadwal_tu = 'tb_jadwal_tu';
-	private $column_order_jadwal_tu = array(null,'fakjur','nama_jurusan','kode_tu','nama_tu','jadwal');
-	private $column_search_jadwal_tu = array('fakjur','nama_jurusan','kode_tu','nama_tu','jadwal');
+	private $column_order_jadwal_tu = array(null,'fakjur','nama_jurusan','kode_tata_usaha','nama_tu');
+	private $column_search_jadwal_tu = array('fakjur','nama_jurusan','kode_tata_usaha','nama_tu');
 	private $order_by_jadwal_tu = array('fakjur'=>'asc');
 
 	private $table_jadwal_bimbingan = 'tb_jadwal_bimbingan';
@@ -34,11 +34,12 @@ class MP_Model extends CI_Model {
 		$this->db->delete($table);
 	}
 
-	public function ambil_like($table, $where){
+	public function ambil_like($table, $where, $match, $side){
 		$this->db->from($table);
-		$this->db->like($where);
+		$this->db->like($where,$match,$side);
 		return $this->db->get();
 	}
+
 
 	private function _get_jadwal(){
 		$this->db->from($this->table_jadwal);
@@ -90,6 +91,7 @@ class MP_Model extends CI_Model {
 	private function _get_jadwal_tu(){
 		$this->db->from($this->table_jadwal_tu);
 		$this->db->join('tb_jurusan','tb_jadwal_tu.fakjur = tb_jurusan.kode_jurusan');
+		$this->db->join('tb_tatausaha','tb_jadwal_tu.kode_tata_usaha = tb_tatausaha.kode_tu');
 		$i=0;
 		foreach ($this->column_search_jadwal_tu as $item) {
 			if($_POST['search']['value']){
@@ -132,6 +134,22 @@ class MP_Model extends CI_Model {
 	function count_all_jadwal_tu(){
 		$this->db->from($this->table_jadwal_tu);
 		return $this->db->count_all_results();
+	}
+
+
+	function update_tu($where,$data){
+        $this->db->update($this->table_jadwal_tu, $data, $where);
+        return $this->db->affected_rows();
+    }
+
+	public function get_by_tu($id){
+		$this->db->from($this->table_jadwal_tu);
+		$this->db->join('tb_jurusan','tb_jadwal_tu.fakjur = tb_jurusan.kode_jurusan');
+		$this->db->join('tb_tatausaha','tb_jadwal_tu.kode_tata_usaha = tb_tatausaha.kode_tu');
+		$this->db->where('id_jadwal_tu',$id);
+		$query = $this->db->get();
+
+		return $query->row();
 	}
 
 	private function _get_jadwal_bimbingan(){

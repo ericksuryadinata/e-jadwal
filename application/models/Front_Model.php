@@ -8,8 +8,8 @@ class Front_Model extends CI_Model {
 	private $order_by_jadwal = array('kode_jurusan'=>'asc');
 
 	private $table_jadwal_tu = 'tb_jadwal_tu';
-	private $column_order_jadwal_tu = array(null,'nama_jurusan','kode_tu','nama_tu','jadwal');
-	private $column_search_jadwal_tu = array('nama_jurusan','kode_tu','nama_tu','jadwal');
+	private $column_order_jadwal_tu = array(null,'nama_jurusan','kode_tata_usaha','nama_tu');
+	private $column_search_jadwal_tu = array('nama_jurusan','kode_tata_usaha','nama_tu');
 	private $order_by_jadwal_tu = array('fakjur'=>'asc');
 
 	private $table_jadwal_bimbingan = 'tb_jadwal_bimbingan';
@@ -124,6 +124,7 @@ class Front_Model extends CI_Model {
 	private function _get_jadwal_tu(){
 		$this->db->from($this->table_jadwal_tu);
 		$this->db->join('tb_jurusan','tb_jadwal_tu.fakjur = tb_jurusan.kode_jurusan');
+		$this->db->join('tb_tatausaha','tb_jadwal_tu.kode_tata_usaha = tb_tatausaha.kode_tu');
 		$i=0;
 		foreach ($this->column_search_jadwal_tu as $item) {
 			if($_POST['search']['value']){

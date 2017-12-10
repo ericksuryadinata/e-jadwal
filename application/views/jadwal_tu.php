@@ -93,7 +93,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                   <th>No</th>
                   <th>Fakultas - Prodi</th>
                   <th>Kode Tata Usaha</th>
-                  <th>Nama Petugas</th>
+                  <th>Nama Tata Usaha</th>
                   <th>Jadwal</th>
                 </tr>
               </thead>
@@ -117,14 +117,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     </a>
     <?php $this->load->view('Partials/Front/Foot');?>
   </body>
-  <script>
-  shortcut.add("Alt+F1",function() {
-    location.replace("<?php echo site_url('MP_Back')?>");
-  });
-  shortcut.add("Alt+F2",function() {
-    location.replace("<?php echo site_url('Front')?>");
-  });
-  </script>
   <script type="text/javascript">
     var table;
     $(document).ready(function() {
@@ -135,11 +127,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
           lengthMenu: "Menampilkan _MENU_ data",
           zeroRecords: "Data Kosong",
           infoEmpty: "Data Kosong",
-          infoFiltered: "(Disaring dari _MAX_ total data)",
-          paginate: {
-              "next":       "Berikutnya",
-              "previous":   "Sebelumnya"
-          },
+          info:"Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
         },
         scrollY: "325px",
         scrollCollapse: true,
@@ -157,7 +145,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         },
         columnDefs: [
             { 
-                targets: [ 0 ],
+                targets: [ 0, -1 ],
                 orderable: false, 
             },
         ],
