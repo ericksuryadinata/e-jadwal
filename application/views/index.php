@@ -96,6 +96,42 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4">
+                            <div class="card text-center" style="width: 20rem;">
+                                <div class="card-body">
+                                    <h4 class="card-title">Data Dosen</h4>
+                                    <p class="card-text">Jadwal Data Dosen Fakultas Teknik Universitas 17 Agustus 1945 Surabaya</p>
+                                </div>
+                                <div class="card-footer">
+                                    <a href="#" class="btn btn-primary">Lihat Data Dosen</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4">
+                            <div class="card text-center" style="width: 20rem;">
+                                <div class="card-body">
+                                    <h4 class="card-title">Surat - Surat</h4>
+                                    <p class="card-text">Kumpulan Surat - Surat Fakultas Teknik Universitas 17 Agustus 1945 Surabaya</p>
+                                </div>
+                                <div class="card-footer">
+                                    <a href="#" class="btn btn-primary">Surat - Surat</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4">
+                            <div class="card text-center" style="width: 20rem;">
+                                <div class="card-body">
+                                    <h4 class="card-title">Keluhan</h4>
+                                    <p class="card-text">Gunakan dengan bijak form pengaduan keluhan ini</p>
+                                    
+                                </div>
+                                <div class="card-footer">
+                                    <a href="#" class="btn btn-primary">Keluhan</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <footer class="footer text-center">
