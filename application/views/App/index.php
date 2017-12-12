@@ -89,8 +89,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								</a>
 							</li>
 							<li class="icn_view_users">
-								<a href="<?php echo site_url('MP_Back/pengumuman')?>">
-									<i class="fa fa-book"></i> <span>Pengumuman</span>
+								<a href="<?php echo site_url('MP_Back/tahun_ajar')?>">
+									<i class="fa fa-book"></i> <span>Tahun Ajar</span>
 								</a>
 							</li>
 		         	</ul>

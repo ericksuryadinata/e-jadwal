@@ -22,11 +22,10 @@ class MP_Model extends CI_Model {
 	private $column_search_dosen = array('fakjur','nip','kode_dosen','nama_dosen','telepon');
 	private $order_by_dosen = array('kode_dosen'=>'asc');
 
-	private $table_pengumuman = 'tb_pengumuman';
-	private $column_order_pengumuman = array(null, 'nm_pengumuman','tgl_mulai','tgl_selesai','nm_gambar','status');
-	private $column_search_pengumuman = array('nm_pengumuman','tgl_mulai','tgl_selesai','nm_gambar','status');
-	private $order_by_pengumuman = array('id_pengumuman'=>'asc');
-
+	private $table_tahunajar = 'tb_tahunajar';
+	private $column_order_tahunajar = array(null,'tahun_semester','status');
+	private $column_search_tahunajar = array('tahun_semester','status');
+	private $order_by_tahunajar = array('id_tahunajar'=>'asc');
 
 	/**
 	 * Fungsi Umum
@@ -60,6 +59,7 @@ class MP_Model extends CI_Model {
 	private function _get_jadwal(){
 		$this->db->from($this->table_jadwal);
 		$this->db->join('tb_jurusan','tb_jadwal.kode_jurusan = tb_jurusan.kode_jurusan');
+		$this->db->where('tahun_ajaran =(SELECT `tahun_semester` FROM `tb_tahunajar` WHERE `status` = 1) ',NULL,FALSE);
 		$i=0;
 		foreach ($this->column_search_jadwal as $item) {
 			if($_POST['search']['value']){
@@ -101,6 +101,8 @@ class MP_Model extends CI_Model {
 
 	function count_all_jadwal(){
 		$this->db->from($this->table_jadwal);
+		$this->db->join('tb_jurusan','tb_jadwal.kode_jurusan = tb_jurusan.kode_jurusan');
+		$this->db->where('tahun_ajaran =(SELECT `tahun_semester` FROM `tb_tahunajar` WHERE `status` = 1) ',NULL,FALSE);
 		return $this->db->count_all_results();
 	}
 
@@ -111,6 +113,7 @@ class MP_Model extends CI_Model {
 		$this->db->from($this->table_jadwal_tu);
 		$this->db->join('tb_jurusan','tb_jadwal_tu.fakjur = tb_jurusan.kode_jurusan');
 		$this->db->join('tb_tatausaha','tb_jadwal_tu.kode_tata_usaha = tb_tatausaha.kode_tu');
+		$this->db->where('tahun_ajaran =(SELECT `tahun_semester` FROM `tb_tahunajar` WHERE `status` = 1) ',NULL,FALSE);
 		$i=0;
 		foreach ($this->column_search_jadwal_tu as $item) {
 			if($_POST['search']['value']){
@@ -152,6 +155,9 @@ class MP_Model extends CI_Model {
 
 	function count_all_jadwal_tu(){
 		$this->db->from($this->table_jadwal_tu);
+		$this->db->join('tb_jurusan','tb_jadwal_tu.fakjur = tb_jurusan.kode_jurusan');
+		$this->db->join('tb_tatausaha','tb_jadwal_tu.kode_tata_usaha = tb_tatausaha.kode_tu');
+		$this->db->where('tahun_ajaran =(SELECT `tahun_semester` FROM `tb_tahunajar` WHERE `status` = 1) ',NULL,FALSE);
 		return $this->db->count_all_results();
 	}
 
@@ -177,6 +183,7 @@ class MP_Model extends CI_Model {
 		$this->db->from($this->table_jadwal_bimbingan);
 		$this->db->join('tb_jurusan','tb_jadwal_bimbingan.jurusan = tb_jurusan.kode_jurusan');
 		$this->db->join('tb_dosen','tb_jadwal_bimbingan.dosen = tb_dosen.kode_dosen');
+		$this->db->where('tahun_ajaran =(SELECT `tahun_semester` FROM `tb_tahunajar` WHERE `status` = 1) ',NULL,FALSE);
 		$i=0;
 		foreach ($this->column_search_jadwal_bimbingan as $item) {
 			if($_POST['search']['value']){
@@ -218,6 +225,9 @@ class MP_Model extends CI_Model {
 
 	function count_all_jadwal_bimbingan(){
 		$this->db->from($this->table_jadwal_bimbingan);
+		$this->db->join('tb_jurusan','tb_jadwal_bimbingan.jurusan = tb_jurusan.kode_jurusan');
+		$this->db->join('tb_dosen','tb_jadwal_bimbingan.dosen = tb_dosen.kode_dosen');
+		$this->db->where('tahun_ajaran =(SELECT `tahun_semester` FROM `tb_tahunajar` WHERE `status` = 1) ',NULL,FALSE);
 		return $this->db->count_all_results();
 	}
 
@@ -301,13 +311,13 @@ class MP_Model extends CI_Model {
 	}
 
 	/**
-	 * Pengumuman
+	 * Tahun Ajar
 	 */
 
-	private function _get_pengumuman(){
-		$this->db->from($this->table_pengumuman);
+	private function _get_tahunajar(){
+		$this->db->from($this->table_tahunajar);
 		$i=0;
-		foreach ($this->column_search_pengumuman as $item) {
+		foreach ($this->column_search_tahunajar as $item) {
 			if($_POST['search']['value']){
 				if($i===0){
 					$this->db->group_start();
@@ -316,7 +326,7 @@ class MP_Model extends CI_Model {
 					$this->db->or_like($item, $_POST['search']['value']);
 				}
 
-				if(count($this->column_search_pengumuman) - 1 == $i){
+				if(count($this->column_search_tahunajar) - 1 == $i){
 					$this->db->group_end();
 				}
 			}
@@ -324,47 +334,44 @@ class MP_Model extends CI_Model {
 		}
 
 		if(isset($_POST['order'])){
-			$this->db->order_by($this->column_order_pengumuman[$_POST['order']['0']['column']],$_POST['order']['0']['dir']);
-		} elseif (isset($this->order_by_pengumuman)) {
-			$order = $this->order_by_pengumuman;
+			$this->db->order_by($this->column_order_tahunajar[$_POST['order']['0']['column']],$_POST['order']['0']['dir']);
+		} elseif (isset($this->order_by_tahunajar)) {
+			$order = $this->order_by_tahunajar;
 			$this->db->order_by(key($order),$order[key($order)]);
 		}
 	}
 
-	public function get_pengumuman(){
-		$this->_get_pengumuman();
+	public function get_data_tahunajar(){
+		$this->_get_tahunajar();
 		if($_POST['length'] != -1)
 			$this->db->limit($_POST['length'], $_POST['start']);
 		$query = $this->db->get();
 		return $query->result();
 	}
 
-	function count_filtered_pengumuman(){
-		$this->_get_pengumuman();
+	function count_filtered_tahunajar(){
+		$this->_get_tahunajar();
 		$query = $this->db->get();
 		return $query->num_rows();
 	}
 
-	function count_all_pengumuman(){
-		$this->db->from($this->table_pengumuman);
+	function count_all_tahunajar(){
+		$this->db->from($this->table_tahunajar);
 		return $this->db->count_all_results();
 	}
 
-	function update_pengumuman($where,$data){
-        $this->db->update($this->table_pengumuman, $data, $where);
+    function update_tahunajar($where,$data){
+        $this->db->update($this->table_tahunajar, $data, $where);
         return $this->db->affected_rows();
     }
 
-	public function get_by_pengumuman($id){
-		$this->db->from($this->table_pengumuman);
-		$this->db->where('id_pengumuman',$id);
+    public function get_by_tahunajar($id){
+		$this->db->from($this->table_tahunajar);
+		$this->db->where('id_tahunajar',$id);
 		$query = $this->db->get();
 
 		return $query->row();
 	}
-
-
-
 }
 /* End of file MP_Model.php */
 /* Location: ./application/models/MP_Model.php */

@@ -176,4 +176,8 @@ class Front extends CI_Controller {
         echo json_encode($output);
     }
 
+    public function screen_saver(){
+        $this->load->view('Screen/index');
+    }
+
 }

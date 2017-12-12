@@ -63,10 +63,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     <div class="row">
                         <div class="col-md-4 col-sm-4">
                             <div class="card text-center" style="width: 20rem;">
-                                <div class="card-body">
-                                    <h4 class="card-title">Data Dosen</h4>
-                                    <p class="card-text">Jadwal Data Dosen Fakultas Teknik Universitas 17 Agustus 1945 Surabaya</p>
-                                </div>
+                                <a href="<?php echo base_url('front/data_dosen')?>">
+                                    <div class="card-body">
+                                        <h4 class="card-title">Data Dosen</h4>
+                                        <p class="card-text">Jadwal Data Dosen Fakultas Teknik Universitas 17 Agustus 1945 Surabaya</p>
+                                    </div>
+                                </a>
                                 <div class="card-footer">
                                     <a href="<?php echo base_url('front/data_dosen')?>" class="btn btn-primary">Lihat Data Dosen</a>
                                 </div>
@@ -106,12 +108,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         </main>
         <?php $this->load->view('Partials/Front/Foot');?>
         <script>
-          $(document).idle({
-            onIdle: function(){
-                //alert("idle");//bakal dipanggil screen saver, cara manggilnya ? entar aja
-            },
-            idle: 5000 //5 menit, default : 60000 [1m]
-          });
+            var url ="http://localhost/pengumuman/pengumuman";
+            $(document).idle({
+                onIdle: function(){
+                    location.replace(url);
+                },
+                idle: 5000 //5 menit, default : 60000 [1m]
+            });
         </script>
       </body>
     </html>

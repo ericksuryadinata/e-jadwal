@@ -168,7 +168,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   <script type="text/javascript">
     var table;
     $(document).ready(function() {
-      
+      var url ="http://localhost/pengumuman/pengumuman";
+      $(document).idle({
+          onIdle: function(){
+              location.replace(url);
+          },
+          idle: 5000 //5 menit, default : 60000 [1m]
+      });
       var prodi = $("#prodi option:selected").val();
       var mk = $("#mk option:selected").val();
       var dosen = $("#dosen option:selected").text();

@@ -16,20 +16,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<div class="row">
 					<div class="col-xs-12">
 						<div class="box box-default">
-			                <div class="box-header with-border">
-			                  <i class="fa fa-user-plus"></i>
-			                  <h3 class="box-title">Upload Jadwal</h3>
-			                </div>
-			                <div class="box-body">
-			                  <p>Gunakan fitur ini untuk Upload Jadwal</p>
-			                  <?php echo form_open_multipart('MP_Back/upload_excel_jadwal','class="form-inline"')?>
-			                  <input name="btn" type="submit" class="btn btn-primary" value="Upload Jadwal">
-			                  <div class="form-group">
-			                    <input class="form-control" type="file" name="file">
-			                  </div>
-			                  <?php echo form_close()?>
-			                </div>
-			              </div>
+							<div class="box-header with-border">
+								<i class="fa fa-user-plus"></i>
+								<h3 class="box-title">Upload Jadwal</h3>
+							</div>
+							<div class="box-body">
+								<p>Gunakan fitur ini untuk Upload Jadwal</p>
+								<?php echo form_open_multipart('MP_Back/upload_excel_jadwal','class="form-inline"')?>
+								<input name="btn" type="submit" class="btn btn-primary" value="Upload Jadwal">
+								<div class="form-group">
+									<input class="form-control" type="file" name="file">
+								</div>
+								<?php echo form_close()?>
+							</div>
+						</div>
 					</div>
 					<div class="col-xs-12">
 					<!-- content box -->

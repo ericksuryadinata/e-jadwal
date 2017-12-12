@@ -156,7 +156,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <script type="text/javascript">
         var table;
         $(document).ready(function() {
-
+            var url ="http://localhost/pengumuman/pengumuman";
+            $(document).idle({
+                onIdle: function(){
+                    location.replace(url);
+                },
+                idle: 5000 //5 menit, default : 60000 [1m]
+            });
             var prodi = $("#prodi option:selected").val();
             var dosen = $("#dosen option:selected").val();
             if(dosen === 'd'){
@@ -165,216 +171,216 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             dosen = $("#dosen option:selected").val();
             }
             table = $('#table').DataTable({
-            language:{
-                emptyTable: "Data Kosong",
-                processing: "Sedang Mencari",
-                lengthMenu: "Menampilkan _MENU_ data",
-                zeroRecords: "Data Kosong",
-                info: "Halaman _PAGE_ dari _PAGES_ halaman",
-                infoEmpty: "Data Kosong",
-                infoFiltered: "(Disaring dari _MAX_ total data)",
-                paginate: {
-                    "next":       "Berikutnya",
-                    "previous":   "Sebelumnya"
+                language:{
+                    emptyTable: "Data Kosong",
+                    processing: "Sedang Mencari",
+                    lengthMenu: "Menampilkan _MENU_ data",
+                    zeroRecords: "Data Kosong",
+                    info: "Halaman _PAGE_ dari _PAGES_ halaman",
+                    infoEmpty: "Data Kosong",
+                    infoFiltered: "(Disaring dari _MAX_ total data)",
+                    paginate: {
+                        "next":       "Berikutnya",
+                        "previous":   "Sebelumnya"
+                    },
                 },
-            },
-            searching:false,
-            stripeClasses: ['table-active','table-default'],
-            processing: true,
-            serverSide: true,
-            order: [],
-            ajax: {
-                url: '<?php echo site_url('Front/list_data_dosen')?>',
-                type: 'POST',
-                data: {'prodi':prodi,'dosen':dosen, '<?php echo $this->security->get_csrf_token_name(); ?>' : '<?php echo $this->security->get_csrf_hash(); ?>'}
-            },
-            columnDefs: [
-                { 
-                    targets: [ 0, 4, -1 ],
-                    orderable: false, 
+                searching:false,
+                stripeClasses: ['table-active','table-default'],
+                processing: true,
+                serverSide: true,
+                order: [],
+                ajax: {
+                    url: '<?php echo site_url('Front/list_data_dosen')?>',
+                    type: 'POST',
+                    data: {'prodi':prodi,'dosen':dosen, '<?php echo $this->security->get_csrf_token_name(); ?>' : '<?php echo $this->security->get_csrf_hash(); ?>'}
                 },
-            ],
+                columnDefs: [
+                    { 
+                        targets: [ 0, 4, -1 ],
+                        orderable: false, 
+                    },
+                ],
             });
     
             $("#prodi").on('change',function(event) {
-            event.preventDefault();
-            var prodi = $("#prodi option:selected").val();
-            var dosen = $("#dosen option:selected").val();
-            if(prodi === 'pd'){
-                $("#prodihasil").text(''); 
-            }else{
-                $("#prodihasil").text($("#prodi option:selected").text());  
-            }
-            var data = {'prodi' : prodi, 'dosen':dosen, '<?php echo $this->security->get_csrf_token_name(); ?>' : '<?php echo $this->security->get_csrf_hash(); ?>'}
-            $.ajax({
-                url: '<?php echo site_url('Front/dataDosen');?>',
-                type: 'POST',
-                dataType: 'JSON',
-                data: data,
-                success: function (data){
-                    var namaDosen = $("#dosen");
-                    namaDosen.empty();
-                    if(data == null ){
-                        namaDosen.append('<option value="d">-- Pilih Dosen --</option>');
-                    }else{
-                        if(data.dosen == 0){
+                event.preventDefault();
+                var prodi = $("#prodi option:selected").val();
+                var dosen = $("#dosen option:selected").val();
+                if(prodi === 'pd'){
+                    $("#prodihasil").text(''); 
+                }else{
+                    $("#prodihasil").text($("#prodi option:selected").text());  
+                }
+                var data = {'prodi' : prodi, 'dosen':dosen, '<?php echo $this->security->get_csrf_token_name(); ?>' : '<?php echo $this->security->get_csrf_hash(); ?>'}
+                $.ajax({
+                    url: '<?php echo site_url('Front/dataDosen');?>',
+                    type: 'POST',
+                    dataType: 'JSON',
+                    data: data,
+                    success: function (data){
+                        var namaDosen = $("#dosen");
+                        namaDosen.empty();
+                        if(data == null ){
                             namaDosen.append('<option value="d">-- Pilih Dosen --</option>');
                         }else{
-                            namaDosen.append('<option value="d" selected>-- Pilih Dosen --</option>');
-                            for(var i = 0; i< data.dosen.length; i++){
-                                namaDosen.append('<option value='+data.dosen[i].kode_dosen+'>'+data.dosen[i].nama_dosen+'</option>');
+                            if(data.dosen == 0){
+                                namaDosen.append('<option value="d">-- Pilih Dosen --</option>');
+                            }else{
+                                namaDosen.append('<option value="d" selected>-- Pilih Dosen --</option>');
+                                for(var i = 0; i< data.dosen.length; i++){
+                                    namaDosen.append('<option value='+data.dosen[i].kode_dosen+'>'+data.dosen[i].nama_dosen+'</option>');
+                                }
                             }
                         }
-                    }
-    
-                    dosen = $("#dosen option:selected").val();
-                    if(dosen === 'd'){
-                        dosen = 'd';
-                    }else{
+        
                         dosen = $("#dosen option:selected").val();
+                        if(dosen === 'd'){
+                            dosen = 'd';
+                        }else{
+                            dosen = $("#dosen option:selected").val();
+                        }
+                        var data = {'prodi':prodi,'dosen':dosen,'<?php echo $this->security->get_csrf_token_name(); ?>' : '<?php echo $this->security->get_csrf_hash(); ?>'}
+                        table.destroy();
+                        table = $('#table').DataTable({
+                            language:{
+                                emptyTable: "Data Kosong",
+                                processing: "Sedang Mencari",
+                                lengthMenu: "Menampilkan _MENU_ data",
+                                zeroRecords: "Data Kosong",
+                                info: "Halaman _PAGE_ dari _PAGES_ halaman",
+                                infoEmpty: "Data Kosong",
+                                infoFiltered: "(Disaring dari _MAX_ total data)",
+                                paginate: {
+                                    "next":       "Berikutnya",
+                                    "previous":   "Sebelumnya"
+                                },
+                            },
+                            searching:false,
+                            stripeClasses: ['table-active','table-default'],
+                            processing: true,
+                            serverSide: true,
+                            order: [],
+                            ajax: {
+                                url: '<?php echo site_url('Front/list_data_dosen')?>',
+                                type: 'POST',
+                                data: data
+                            },
+                            columnDefs: [
+                                { 
+                                    targets: [ 0, 4, -1 ],
+                                    orderable: false, 
+                                },
+                            ],
+                        });
+                    },
+                    error:function(jqXHR, textStatus, errorThrown) {
+                        swal("Error", "Pengambilan data gagal", "error");
                     }
-                    var data = {'prodi':prodi,'dosen':dosen,'<?php echo $this->security->get_csrf_token_name(); ?>' : '<?php echo $this->security->get_csrf_hash(); ?>'}
-                    table.destroy();
-                    table = $('#table').DataTable({
-                        language:{
-                            emptyTable: "Data Kosong",
-                            processing: "Sedang Mencari",
-                            lengthMenu: "Menampilkan _MENU_ data",
-                            zeroRecords: "Data Kosong",
-                            info: "Halaman _PAGE_ dari _PAGES_ halaman",
-                            infoEmpty: "Data Kosong",
-                            infoFiltered: "(Disaring dari _MAX_ total data)",
-                            paginate: {
-                                "next":       "Berikutnya",
-                                "previous":   "Sebelumnya"
-                            },
-                        },
-                        searching:false,
-                        stripeClasses: ['table-active','table-default'],
-                        processing: true,
-                        serverSide: true,
-                        order: [],
-                        ajax: {
-                            url: '<?php echo site_url('Front/list_data_dosen')?>',
-                            type: 'POST',
-                            data: data
-                        },
-                        columnDefs: [
-                            { 
-                                targets: [ 0, 4, -1 ],
-                                orderable: false, 
-                            },
-                        ],
-                    });
-                },
-                error:function(jqXHR, textStatus, errorThrown) {
-                    swal("Error", "Pengambilan data gagal", "error");
-                }
-            });
+                });
             });
     
             $("#dosen").on('change',function(event) {
-            event.preventDefault();
-            var prodi = $("#prodi option:selected").val();
-            var dosen = $("#dosen option:selected").val();
-            if(dosen === 'd'){
-                dosen = 'd';
-            }else{
-                dosen = $("#dosen option:selected").val();
-            }
-            var data = {'prodi':prodi,'dosen':dosen, '<?php echo $this->security->get_csrf_token_name(); ?>' : '<?php echo $this->security->get_csrf_hash(); ?>'}
-            table.destroy();
-            table = $('#table').DataTable({
-                language:{
-                emptyTable: "Data Kosong",
-                processing: "Sedang Mencari",
-                lengthMenu: "Menampilkan _MENU_ data",
-                zeroRecords: "Data Kosong",
-                info: "Halaman _PAGE_ dari _PAGES_ halaman",
-                infoEmpty: "Data Kosong",
-                infoFiltered: "(Disaring dari _MAX_ total data)",
-                paginate: {
-                    "next":       "Berikutnya",
-                    "previous":   "Sebelumnya"
-                },
-                },
-                stripeClasses: ['table-active','table-default'],
-                searching : false,
-                processing: true,
-                serverSide: true,
-                order: [],
-                ajax: {
-                    url: '<?php echo site_url('Front/list_data_dosen')?>',
-                    type: 'POST',
-                    data: data
-                },
-                columnDefs: [
-                    { 
-                        targets: [ 0, 4, -1 ],
-                        orderable: false, 
+                event.preventDefault();
+                var prodi = $("#prodi option:selected").val();
+                var dosen = $("#dosen option:selected").val();
+                if(dosen === 'd'){
+                    dosen = 'd';
+                }else{
+                    dosen = $("#dosen option:selected").val();
+                }
+                var data = {'prodi':prodi,'dosen':dosen, '<?php echo $this->security->get_csrf_token_name(); ?>' : '<?php echo $this->security->get_csrf_hash(); ?>'}
+                table.destroy();
+                table = $('#table').DataTable({
+                    language:{
+                    emptyTable: "Data Kosong",
+                    processing: "Sedang Mencari",
+                    lengthMenu: "Menampilkan _MENU_ data",
+                    zeroRecords: "Data Kosong",
+                    info: "Halaman _PAGE_ dari _PAGES_ halaman",
+                    infoEmpty: "Data Kosong",
+                    infoFiltered: "(Disaring dari _MAX_ total data)",
+                    paginate: {
+                        "next":       "Berikutnya",
+                        "previous":   "Sebelumnya"
                     },
-                ],
-            });
+                    },
+                    stripeClasses: ['table-active','table-default'],
+                    searching : false,
+                    processing: true,
+                    serverSide: true,
+                    order: [],
+                    ajax: {
+                        url: '<?php echo site_url('Front/list_data_dosen')?>',
+                        type: 'POST',
+                        data: data
+                    },
+                    columnDefs: [
+                        { 
+                            targets: [ 0, 4, -1 ],
+                            orderable: false, 
+                        },
+                    ],
+                });
             });
     
             $("#btn-filter").on('click',function(event) {
-            event.preventDefault();
-            table.ajax.reload();
+                event.preventDefault();
+                table.ajax.reload();
             });
     
             $("#btn-reset").on('click',function(event) {
-            event.preventDefault();
-            $('#dosen option').prop('selected', function() {
-                return this.defaultSelected;
-            });
-    
-            $('#prodi option').prop('selected', function() {
-                return this.defaultSelected;
-            });
-    
-            $('#prodihasil').text('');
-    
-            $("#btn-filter").trigger('click');
-            var prodi = $("#prodi option:selected").val();
-            var dosen = $("#dosen option:selected").val();
-            if(dosen === '-- Pilih Dosen --'){
-                dosen = 'd';
-            }else{
-                dosen = $("#dosen option:selected").val();
-            }
-            var data = {'prodi':prodi,'dosen':dosen,'<?php echo $this->security->get_csrf_token_name(); ?>' : '<?php echo $this->security->get_csrf_hash(); ?>'}
-            table.destroy();
-            table = $('#table').DataTable({
-                language:{
-                emptyTable: "Data Kosong",
-                processing: "Sedang Mencari",
-                lengthMenu: "Menampilkan _MENU_ data",
-                zeroRecords: "Data Kosong",
-                info: "Halaman _PAGE_ dari _PAGES_ halaman",
-                infoEmpty: "Data Kosong",
-                infoFiltered: "(Disaring dari _MAX_ total data)",
-                paginate: {
-                    "next":       "Berikutnya",
-                    "previous":   "Sebelumnya"
-                },
-                },
-                stripeClasses: ['table-active','table-default'],
-                searching : false,
-                processing: true,
-                serverSide: true,
-                order: [],
-                ajax: {
-                    url: '<?php echo site_url('Front/list_data_dosen')?>',
-                    type: 'POST',
-                    data: data
-                },
-                columnDefs: [
-                    { 
-                        targets: [ 0, 4, -1 ],
-                        orderable: false, 
+                event.preventDefault();
+                $('#dosen option').prop('selected', function() {
+                    return this.defaultSelected;
+                });
+        
+                $('#prodi option').prop('selected', function() {
+                    return this.defaultSelected;
+                });
+        
+                $('#prodihasil').text('');
+        
+                $("#btn-filter").trigger('click');
+                var prodi = $("#prodi option:selected").val();
+                var dosen = $("#dosen option:selected").val();
+                if(dosen === '-- Pilih Dosen --'){
+                    dosen = 'd';
+                }else{
+                    dosen = $("#dosen option:selected").val();
+                }
+                var data = {'prodi':prodi,'dosen':dosen,'<?php echo $this->security->get_csrf_token_name(); ?>' : '<?php echo $this->security->get_csrf_hash(); ?>'}
+                table.destroy();
+                table = $('#table').DataTable({
+                    language:{
+                    emptyTable: "Data Kosong",
+                    processing: "Sedang Mencari",
+                    lengthMenu: "Menampilkan _MENU_ data",
+                    zeroRecords: "Data Kosong",
+                    info: "Halaman _PAGE_ dari _PAGES_ halaman",
+                    infoEmpty: "Data Kosong",
+                    infoFiltered: "(Disaring dari _MAX_ total data)",
+                    paginate: {
+                        "next":       "Berikutnya",
+                        "previous":   "Sebelumnya"
                     },
-                ],
-            });
+                    },
+                    stripeClasses: ['table-active','table-default'],
+                    searching : false,
+                    processing: true,
+                    serverSide: true,
+                    order: [],
+                    ajax: {
+                        url: '<?php echo site_url('Front/list_data_dosen')?>',
+                        type: 'POST',
+                        data: data
+                    },
+                    columnDefs: [
+                        { 
+                            targets: [ 0, 4, -1 ],
+                            orderable: false, 
+                        },
+                    ],
+                });
             });
         });
     </script>

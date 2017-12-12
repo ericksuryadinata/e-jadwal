@@ -69,7 +69,8 @@ class MP_Back extends CI_Controller {
                     "jadwal"=> $rowData[0][6],
                     "pengajar"=> $rowData[0][7],
                     "ruang"=> strtoupper($rowData[0][8]),
-                    "peserta"=> $rowData[0][9]
+                    "peserta"=> $rowData[0][9],
+                    "tahun_ajaran"=>$rowData[0][10]
                 );
                  
                 //sesuaikan nama dengan nama tabel
@@ -509,7 +510,6 @@ class MP_Back extends CI_Controller {
                         "recordsFiltered" => $this->mp->count_filtered_data_dosen(),
                         "data"=>$data);
         echo json_encode($output);
-
     }
 
     public function tambah_data_dosen(){
@@ -560,44 +560,125 @@ class MP_Back extends CI_Controller {
     }
 
     /**
-     * Pengumuman
+     * Tahun Ajaran
      */
 
-    public function pengumuman(){
+    public function tahun_ajar(){
+        $data['pesan'] = $this->session->userdata('p');
         $data['pesan'] = $this->session->userdata('p');
         $this->load->view('App/index',$data);
-        $this->load->view('App/Pengumuman');
+        $this->load->view('App/Tahun_ajar');
         $this->load->view('App/Footer');
     }
 
-    public function list_pengumuman(){
-        $list = $this->mp->get_pengumuman();
+    public function list_tahunajar(){
+        $list = $this->mp->get_data_tahunajar();
         $data = array();
         $no = $_POST['start'];
-        foreach ($list as $pengumuman) {
+        foreach ($list as $tahunajar) {
             $no++;
             $row = array();
             $row[] = $no;
-            $row[] = $pengumuman->nm_pengumuman;
-            $row[] = $pengumuman->tgl_mulai;
-            $row[] = $pengumuman->tgl_selesai;
-            $row[] = $pengumuman->nm_gambar;
-            if($pengumuman->status === '1'){
-                $row[] = 'Aktif';
-                $row[] = '<a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Edit" onclick="update_pengumuman('."'".$pengumuman->id_pengumuman."'".')"><i class="glyphicon glyphicon-pencil"></i>&nbsp;Edit</a> <a class="btn btn-sm btn-danger" href="javascript:void(0)" title="Hapus" onclick="delete_pengumuman('."'".$pengumuman->id_pengumuman."'".')"><i class="glyphicon glyphicon-trash"></i>&nbsp;Delete</a> <a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Aktifkan" onclick="aktifkan_pengumuman('."'".$pengumuman->id_pengumuman."','Aktifkan'".')"><i class="glyphicon glyphicon-ok-circle"></i> Aktifkan</a>';
+            $tahundapat = str_split($tahunajar->tahun_semester,4);
+            $row[] = $tahundapat[0];
+            if($tahundapat[1] == 1){
+                $row[] = 'Ganjil';
             }else{
+                $row[] = 'Genap';
+            }
+            if($tahunajar->status == 1){
                 $row[] = 'Aktif';
-                $row[] = '<a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Edit" onclick="update_pengumuman('."'".$pengumuman->id_pengumuman."'".')"><i class="glyphicon glyphicon-pencil"></i>&nbsp;Edit</a> <a class="btn btn-sm btn-danger" href="javascript:void(0)" title="Hapus" onclick="delete_pengumuman('."'".$pengumuman->id_pengumuman."'".')"><i class="glyphicon glyphicon-trash"></i>&nbsp;Delete</a> <a class="btn btn-sm btn-default" href="javascript:void(0)" title="Non Aktifkan" onclick="aktifkan_pengumuman('."'".$pengumuman->id_pengumuman."','Non Aktifkan'".')"><i class="glyphicon glyphicon-ban-circle"></i> Non Aktifkan</a>';
-
+                $row[] = '<a class="btn btn-sm btn-default" href="javascript:void(0)" title="Aktif" onclick="aktifkan_ta('."'".$tahunajar->id_tahunajar."','Non Aktifkan'".')"><i class="glyphicon glyphicon-ban-circle"></i> Non Aktifkan</a> <a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Edit" onclick="update_ta('."'".$tahunajar->id_tahunajar."'".')"><i class="glyphicon glyphicon-pencil"></i>&nbsp;Edit</a> <a class="btn btn-sm btn-danger" href="javascript:void(0)" title="Hapus" onclick="delete_ta('."'".$tahunajar->id_tahunajar."'".')"><i class="glyphicon glyphicon-trash"></i>&nbsp;Delete</a>';
+            }else{
+                $row[] = 'Tidak Aktif';
+                $row[] = '<a class="btn btn-sm btn-success" href="javascript:void(0)" title="Tidak Aktif" onclick="aktifkan_ta('."'".$tahunajar->id_tahunajar."','Aktifkan'".')"><i class="glyphicon glyphicon-ok-circle"></i> Aktifkan</a> <a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Edit" onclick="update_ta('."'".$tahunajar->id_tahunajar."'".')"><i class="glyphicon glyphicon-pencil"></i>&nbsp;Edit</a> <a class="btn btn-sm btn-danger" href="javascript:void(0)" title="Hapus" onclick="delete_ta('."'".$tahunajar->id_tahunajar."'".')"><i class="glyphicon glyphicon-trash"></i>&nbsp;Delete</a>';
             }
             $data[] = $row;
         }
         $output = array("draw"=>$_POST['draw'],
-                        "recordsTotal" => $this->mp->count_all_pengumuman(),
-                        "recordsFiltered" => $this->mp->count_filtered_pengumuman(),
+                        "recordsTotal" => $this->mp->count_all_tahunajar(),
+                        "recordsFiltered" => $this->mp->count_filtered_tahunajar(),
                         "data"=>$data);
         echo json_encode($output);
+    }
 
+    public function tambah_tahunajar(){
+        if($_POST){
+            $tahun = $this->security->xss_clean($this->input->post('tahunajar'));
+            $semester = $this->security->xss_clean($this->input->post('semester'));
+            $thn_smst = $tahun.$semester;
+            $data = array(
+                    'tahun_semester'=>$thn_smst,
+                    'status'=>'0'
+                    );
+            $insert = $this->mp->tambah_data('tb_tahunajar',$data);
+            echo json_encode(array("status"=>TRUE));
+        }else{
+            redirect('Utama');
+        }
+    }
+
+    public function update_tahunajar(){
+        if($_POST){
+            $tahun = $this->security->xss_clean($this->input->post('tahun'));
+            $semester = $this->security->xss_clean($this->input->post('semester'));
+            $thn_smst = $tahun.$semester;
+            $data = array(
+                    'tahun_semester'=>$thn_smst,
+                    'status'=>'0'
+                    );
+            $where = array('id_tahunajar'=>$this->security->xss_clean($this->input->post('val')));
+            $update = $this->mp->update_tahunajar($where,$data);
+            echo json_encode(array('status'=>TRUE));
+        }else{
+            redirect('MP_Back');
+        }
+    }
+
+    public function edit_tahunajar(){
+        if($_POST){
+            $id = $this->security->xss_clean($this->input->post('id_dosen'));
+            $data = $this->mp->get_by_tahunajar($id);
+            echo json_encode($data);    
+        } else {
+            redirect('MP_Back');
+        }
+    }
+
+    public function hapus_tahunajar(){
+        if($_POST){
+            $id = array('id_tahunajar'=>$this->security->xss_clean($this->input->post('id_tahunajar')));
+            $this->mp->delete('tb_tahunajar',$id);
+            echo json_encode(array('status'=>TRUE));
+        }else{
+            redirect('MP_Back');
+        }
+    }
+
+     public function aktifkan_tahunajar(){
+        if($_POST){
+            $aktif = array('status'=>'1');
+            $sekarang = $this->mp->ambil_satu('tb_tahunajar',$aktif);
+            if($sekarang->num_rows() > 0){
+                $tahun = $sekarang->row();
+                $tahunaktif = array('id_tahunajar'=> $tahun->id_tahunajar);
+                $updatesekarang = array('status'=>'0');
+                $this->mp->update_tahunajar($tahunaktif,$updatesekarang);
+            }
+            $data = $this->security->xss_clean($this->input->post('status'));
+            if($data === 'T'){
+                $data = array('status'=>'0');
+                $status = 'T';
+            }else{
+                $data = array('status'=>'1');
+                $status = 'A';
+            }
+            $where = array('id_tahunajar'=>$this->security->xss_clean($this->input->post('id_tahunajar')));
+            $this->mp->update_tahunajar($where,$data);
+            echo json_encode(array("status" => TRUE,"Aktif" => $status));
+        } else {
+            redirect('MP_Back');
+        }
     }
 }
 
