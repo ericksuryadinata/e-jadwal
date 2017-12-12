@@ -13,3 +13,7 @@ NOT YET
     --> logicnya ada di javascript index.php
 5. semacam animasi, biar lebih atraktif, loader ? atau apa gitu ?
 6. Tombol pencet di home buat aja full
+7. Font Tata Usaha Kurang Besar
+8. Tambah tahun ajaran akademik dan semester
+tahun ajaran = 20171
+9. T

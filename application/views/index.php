@@ -68,7 +68,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     <p class="card-text">Jadwal Data Dosen Fakultas Teknik Universitas 17 Agustus 1945 Surabaya</p>
                                 </div>
                                 <div class="card-footer">
-                                    <a href="#" class="btn btn-primary">Lihat Data Dosen</a>
+                                    <a href="<?php echo base_url('front/data_dosen')?>" class="btn btn-primary">Lihat Data Dosen</a>
                                 </div>
                             </div>
                         </div>
@@ -110,7 +110,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             onIdle: function(){
                 //alert("idle");//bakal dipanggil screen saver, cara manggilnya ? entar aja
             },
-            idle: 10000 //5 menit, default : 60000 [1m]
+            idle: 5000 //5 menit, default : 60000 [1m]
           });
         </script>
       </body>

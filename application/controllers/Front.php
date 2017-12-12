@@ -27,6 +27,14 @@ class Front extends CI_Controller {
         $this->load->view('bimbingan_dosen',$data);
     }
 
+    public function data_dosen(){
+        $prodi = $this->front->getAllProdi();
+        if($prodi->num_rows() > 0){
+            $data['jurusan'] = $prodi->result();
+        }
+        $this->load->view('data_dosen',$data);
+    }
+
 	public function list_jadwal(){
         $prodi = array('kode_jurusan'=>$this->security->xss_clean($this->input->post('prodi')));
         $mk = array('kode_mk'=>$this->security->xss_clean($this->input->post('mk')));
@@ -128,7 +136,44 @@ class Front extends CI_Controller {
                         "recordsFiltered" => $this->front->count_filtered_jadwal_bimbingan($prodi,$dosen),
                         "data"=>$data);
         echo json_encode($output);
+    }
 
+    public function dataDosen(){
+        if($_POST){
+            $prodi = $this->security->xss_clean($this->input->post('prodi'));
+            if($prodi === 'pd'){
+                echo json_encode(null);
+            }else{
+                $dosen = $this->front->getWhere('tb_dosen',array('fakjur'=>$prodi));
+                echo json_encode(array('dosen'=>$dosen->result_array()));
+            }
+        }else{
+            redirect('front');
+        }
+    }
+
+    public function list_data_dosen(){
+        $prodi = array('fakjur'=>$this->security->xss_clean($this->input->post('prodi')));
+        $dosen = array('kode_dosen'=>$this->security->xss_clean($this->input->post('dosen')));
+        $list = $this->front->get_data_dosen($prodi,$dosen);
+        $data = array();
+        $no = $_POST['start'];
+        foreach ($list as $data_dosen) {
+            $no++;
+            $row = array();
+            $row[] = $no;
+            $row[] = $data_dosen->nama_jurusan;
+            $row[] = $data_dosen->nip;
+            $row[] = $data_dosen->kode_dosen;
+            $row[] = $data_dosen->nama_dosen;
+            $row[] = $data_dosen->telepon;
+            $data[] = $row;
+        }
+        $output = array("draw"=>$_POST['draw'],
+                        "recordsTotal" => $this->front->count_all_data_dosen($prodi,$dosen),
+                        "recordsFiltered" => $this->front->count_filtered_data_dosen($prodi,$dosen),
+                        "data"=>$data);
+        echo json_encode($output);
     }
 
 }

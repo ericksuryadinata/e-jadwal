@@ -132,7 +132,7 @@ class MP_Back extends CI_Controller {
     public function upload_excel_tu(){
         if( !isset($_FILES['file']['name']) || empty($_FILES['file']['name'])){
             $this->session->set_flashdata("p",'<script>swal("Error", "File Belum Dipilih", "error")</script>');
-            redirect('MP_Back');
+            redirect('MP_Back/jadwal_tu');
         }else{
             $ext = pathinfo($_FILES['file']['name'],PATHINFO_EXTENSION);
             $id = 'jadwal_tu.'.$ext;
@@ -148,7 +148,7 @@ class MP_Back extends CI_Controller {
             if(! $this->upload->do_upload('file') ){
                 $this->upload->display_errors();
                 $this->session->set_flashdata("p",'<script>swal("Error", "Extensi file salah", "error")</script>');
-                redirect('MP_Back');
+                redirect('MP_Back/jadwal_tu');
             }
                  
             $media = $this->upload->data('file');
@@ -174,11 +174,12 @@ class MP_Back extends CI_Controller {
                                                 FALSE);
                                                  
                 //Sesuaikan sama nama kolom tabel di database                                
-                 $data = array(
+                $data = array(
                     "fakjur"=> $rowData[0][0],
                     "kode_tata_usaha"=> $rowData[0][1],
                     "hari"=> $rowData[0][2],
-                    "jam"=> $rowData[0][3]
+                    "jam"=> $rowData[0][3],
+                    "tahun_ajaran" => $rowData[0][4]
                 );
                  
                 //sesuaikan nama dengan nama tabel
@@ -190,7 +191,7 @@ class MP_Back extends CI_Controller {
                 redirect('MP_Back/jadwal_tu');
             } else {
                 $this->session->set_flashdata("p",'<script>swal("Error", "Gagal Upload", "error")</script>');
-                redirect('MP_Back');
+                redirect('MP_Back/jadwal_tu');
             }
         }
     }
@@ -219,7 +220,6 @@ class MP_Back extends CI_Controller {
                         "data"=>$data);
         echo json_encode($output);
     }
-
     
     public function kode_tu(){
         if($_POST){
@@ -321,7 +321,7 @@ class MP_Back extends CI_Controller {
         if($_POST){
             $prodi = $this->security->xss_clean($this->input->post('prodi'));
             $kodedosen = array('kode_dosen'=>$kd);
-            $q = $this->mp->ambil_like('tb_dosen',$kodedosen);
+            $q = $this->mp->ambil_like('tb_dosen',$kodedosen,false,'both');
             if($q->num_rows() > 0 ){
                 echo json_encode($q->result());
             }else{
@@ -406,6 +406,199 @@ class MP_Back extends CI_Controller {
         }
     }
 
+    /**
+     * data dosen
+     */
+
+    public function upload_excel_dosen(){
+        if( !isset($_FILES['file']['name']) || empty($_FILES['file']['name'])){
+            $this->session->set_flashdata("p",'<script>swal("Error", "File Belum Dipilih", "error")</script>');
+            redirect('MP_Back');
+        }else{
+            $ext = pathinfo($_FILES['file']['name'],PATHINFO_EXTENSION);
+            $id = 'data_dosen.'.$ext;
+            //$id = preg_replace('/\s+/', '_', $_FILES['file']['name']);
+            $fileName = date('Y_m_d_His').'_TU_'.$id;
+            $config['upload_path'] = 'application/uploads/excel/';
+            $config['file_name'] = $fileName;
+            $config['allowed_types'] = 'ods|xls|xlsx|csv';
+            $config['max_size'] = 10000;
+             
+            $this->upload->initialize($config);
+             
+            if(! $this->upload->do_upload('file') ){
+                $this->upload->display_errors();
+                $this->session->set_flashdata("p",'<script>swal("Error", "Extensi file salah", "error")</script>');
+                redirect('MP_Back');
+            }
+                 
+            $media = $this->upload->data('file');
+            //$inputFileName = APPPATH.'uploads\excel\\'.$fileName; //windows
+            $inputFileName = APPPATH.'uploads/excel/'.$fileName; //linux
+        
+            try {
+                $inputFileType = PHPExcel_IOFactory::identify($inputFileName);
+                $objReader = PHPExcel_IOFactory::createReader($inputFileType);
+                $objPHPExcel = $objReader->load($inputFileName);
+            } catch(Exception $e) {
+                die('Error loading file "'.pathinfo($inputFileName,PATHINFO_BASENAME).'": '.$e->getMessage());
+            }
+ 
+            $sheet = $objPHPExcel->getSheet(0);
+            $highestRow = $sheet->getHighestRow();
+            $highestColumn = $sheet->getHighestColumn();
+             
+            for ($row = 2; $row <= $highestRow; $row++){                  //  Read a row of data into an array                 
+                $rowData = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row,
+                                                NULL,
+                                                TRUE,
+                                                FALSE);
+                                                 
+                //Sesuaikan sama nama kolom tabel di database                                
+                 $data = array(
+                    "fakjur"=> $rowData[0][0],
+                    "nip"=> $rowData[0][1],
+                    "kode_dosen"=> $rowData[0][2],
+                    "nama_dosen"=> $rowData[0][3],
+                    "telepon"=> $rowData[0][4]
+                );
+                 
+                //sesuaikan nama dengan nama tabel
+                $insert = $this->db->insert("tb_dosen",$data);
+                delete_files($media['full_path']);
+            }
+            if($insert){
+                $this->session->set_flashdata("p",'<script>swal("Sukses", "Berhasil upload", "success")</script>');
+                redirect('MP_Back/data_dosen');
+            } else {
+                $this->session->set_flashdata("p",'<script>swal("Error", "Gagal Upload", "error")</script>');
+                redirect('MP_Back/data_dosen');
+            }
+        }
+    }
+
+    public function data_dosen(){
+        $prodi = $this->mp->getAllProdi();
+        if($prodi->num_rows() > 0){
+            $data['jurusan'] = $prodi->result();
+        }
+        $data['pesan'] = $this->session->userdata('p');
+        $this->load->view('App/index',$data);
+        $this->load->view('App/Data_dosen');
+        $this->load->view('App/Footer');
+    }
+
+    public function list_data_dosen(){
+        $list = $this->mp->get_data_dosen();
+        $data = array();
+        $no = $_POST['start'];
+        foreach ($list as $data_dosen) {
+            $no++;
+            $row = array();
+            $row[] = $no;
+            $row[] = $data_dosen->nama_jurusan;
+            $row[] = $data_dosen->nip;
+            $row[] = $data_dosen->kode_dosen;
+            $row[] = $data_dosen->nama_dosen;
+            $row[] = $data_dosen->telepon;
+            $row[] = '<a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Edit" onclick="update_dosen('."'".$data_dosen->id_dosen."'".')"><i class="glyphicon glyphicon-pencil"></i>&nbsp;Edit</a> <a class="btn btn-sm btn-danger" href="javascript:void(0)" title="Hapus" onclick="delete_dosen('."'".$data_dosen->id_dosen."'".')"><i class="glyphicon glyphicon-trash"></i>&nbsp;Delete</a>';
+            $data[] = $row;
+        }
+        $output = array("draw"=>$_POST['draw'],
+                        "recordsTotal" => $this->mp->count_all_data_dosen(),
+                        "recordsFiltered" => $this->mp->count_filtered_data_dosen(),
+                        "data"=>$data);
+        echo json_encode($output);
+
+    }
+
+    public function tambah_data_dosen(){
+        if($_POST){
+            $data = array('fakjur'=>$this->security->xss_clean($this->input->post('prodi')),
+                'nip'=>$this->security->xss_clean($this->input->post('nip')),'kode_dosen'=>$this->security->xss_clean($this->input->post('kodedosen')),'nama_dosen'=>$this->security->xss_clean($this->input->post('namadosen')),
+                'telepon'=>$this->security->xss_clean($this->input->post('telepon'))
+            );
+            $insert = $this->mp->tambah_data('tb_dosen',$data);
+            echo json_encode(array('status'=>TRUE));
+        }else{
+            redirect('MP_Back');
+        }
+    }
+
+    public function update_data_dosen(){
+        if($_POST){
+            $data = array('fakjur'=>$this->security->xss_clean($this->input->post('prodi')),
+                'nip'=>$this->security->xss_clean($this->input->post('nip')),'kode_dosen'=>$this->security->xss_clean($this->input->post('kodedosen')),'nama_dosen'=>$this->security->xss_clean($this->input->post('namadosen')),
+                'telepon'=>$this->security->xss_clean($this->input->post('telepon'))
+            );
+            $where = array('id_dosen'=>$this->security->xss_clean($this->input->post('val')));
+            $update = $this->mp->update_data_dosen($where,$data);
+            echo json_encode(array('status'=>TRUE));
+        }else{
+            redirect('MP_Back');
+        }
+    }
+
+    public function edit_data_dosen(){
+        if($_POST){
+            $id = $this->security->xss_clean($this->input->post('id_dosen'));
+            $data = $this->mp->get_by_dosen($id);
+            echo json_encode($data);    
+        } else {
+            redirect('MP_Back');
+        }
+    }
+
+    public function hapus_data_dosen(){
+        if($_POST){
+            $id = array('id_dosen'=>$this->security->xss_clean($this->input->post('id_dosen')));
+            $this->mp->delete('tb_dosen',$id);
+            echo json_encode(array('status'=>TRUE));
+        }else{
+            redirect('MP_Back');
+        }
+    }
+
+    /**
+     * Pengumuman
+     */
+
+    public function pengumuman(){
+        $data['pesan'] = $this->session->userdata('p');
+        $this->load->view('App/index',$data);
+        $this->load->view('App/Pengumuman');
+        $this->load->view('App/Footer');
+    }
+
+    public function list_pengumuman(){
+        $list = $this->mp->get_pengumuman();
+        $data = array();
+        $no = $_POST['start'];
+        foreach ($list as $pengumuman) {
+            $no++;
+            $row = array();
+            $row[] = $no;
+            $row[] = $pengumuman->nm_pengumuman;
+            $row[] = $pengumuman->tgl_mulai;
+            $row[] = $pengumuman->tgl_selesai;
+            $row[] = $pengumuman->nm_gambar;
+            if($pengumuman->status === '1'){
+                $row[] = 'Aktif';
+                $row[] = '<a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Edit" onclick="update_pengumuman('."'".$pengumuman->id_pengumuman."'".')"><i class="glyphicon glyphicon-pencil"></i>&nbsp;Edit</a> <a class="btn btn-sm btn-danger" href="javascript:void(0)" title="Hapus" onclick="delete_pengumuman('."'".$pengumuman->id_pengumuman."'".')"><i class="glyphicon glyphicon-trash"></i>&nbsp;Delete</a> <a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Aktifkan" onclick="aktifkan_pengumuman('."'".$pengumuman->id_pengumuman."','Aktifkan'".')"><i class="glyphicon glyphicon-ok-circle"></i> Aktifkan</a>';
+            }else{
+                $row[] = 'Aktif';
+                $row[] = '<a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Edit" onclick="update_pengumuman('."'".$pengumuman->id_pengumuman."'".')"><i class="glyphicon glyphicon-pencil"></i>&nbsp;Edit</a> <a class="btn btn-sm btn-danger" href="javascript:void(0)" title="Hapus" onclick="delete_pengumuman('."'".$pengumuman->id_pengumuman."'".')"><i class="glyphicon glyphicon-trash"></i>&nbsp;Delete</a> <a class="btn btn-sm btn-default" href="javascript:void(0)" title="Non Aktifkan" onclick="aktifkan_pengumuman('."'".$pengumuman->id_pengumuman."','Non Aktifkan'".')"><i class="glyphicon glyphicon-ban-circle"></i> Non Aktifkan</a>';
+
+            }
+            $data[] = $row;
+        }
+        $output = array("draw"=>$_POST['draw'],
+                        "recordsTotal" => $this->mp->count_all_pengumuman(),
+                        "recordsFiltered" => $this->mp->count_filtered_pengumuman(),
+                        "data"=>$data);
+        echo json_encode($output);
+
+    }
 }
 
 /* End of file MP_Back.php */

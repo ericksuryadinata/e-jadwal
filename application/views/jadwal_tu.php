@@ -76,6 +76,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             <li class="nav-item">
               <a class="nav-link js-scroll-trigger" href="<?php echo base_url('front/bimbingan_dosen');?>">Jadwal Bimbingan Dosen</a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="<?php echo base_url('front/data_dosen');?>">Data Dosen</a>
+            </li>
           </ul>
         </div>
       </div>
@@ -97,7 +100,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                   <th>Jadwal</th>
                 </tr>
               </thead>
-              <tbody style="font-size: 12px;">
+              <tbody style="font-size: 16px;">
               </tbody>
             </table>
           </div>

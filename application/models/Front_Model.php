@@ -16,6 +16,11 @@ class Front_Model extends CI_Model {
 	private $column_order_jadwal_bimbingan = array(null, 'jurusan','nama_jurusan','dosen','nama_dosen');
 	private $column_search_jadwal_bimbingan = array('jurusan','nama_jurusan','dosen','nama_dosen');
 	private $order_by_jadwal_bimbingan = array('jurusan'=>'asc');
+
+	private $table_dosen = 'tb_dosen';
+	private $column_order_dosen = array(null, 'fakjur','nip','kode_dosen','nama_dosen','telepon');
+	private $column_search_dosen = array('fakjur','nip','kode_dosen','nama_dosen','telepon');
+	private $order_by_dosen = array('kode_dosen'=>'asc');
 	
 	public function getKuliahDistinct($tabel,$param = null){
 		$this->db->select('kode_mk, nama_mk');
@@ -24,8 +29,6 @@ class Front_Model extends CI_Model {
 		$this->db->where($param);
 		return $this->db->get();
 	}
-
-	
 
 	public function getDosenDistinct($id){
 		if($id === 'pd'){
@@ -38,6 +41,12 @@ class Front_Model extends CI_Model {
 	public function getDosen($table,$where = null){
 		$this->db->from($table);
 		$this->db->like($where);
+		return $this->db->get();
+	}
+
+	public function getWhere($table,$where = null){
+		$this->db->from($table);
+		$this->db->where($where);
 		return $this->db->get();
 	}
 
@@ -235,6 +244,71 @@ class Front_Model extends CI_Model {
 		}
 		return $this->db->count_all_results();
 	}
+
+	private function _get_data_dosen($prodi = null, $dosen = null){
+		$this->db->from($this->table_dosen);
+		$this->db->join('tb_jurusan','tb_dosen.fakjur = tb_jurusan.kode_jurusan');
+		if($prodi['fakjur'] !== 'pd' && $dosen['kode_dosen'] !== 'd'){
+			$this->db->where($prodi);
+			$this->db->where($dosen);
+		}elseif($prodi['fakjur'] !== 'pd'){
+			$this->db->where($prodi);
+		}else{
+
+		}
+		$i=0;
+		foreach ($this->column_search_dosen as $item) {
+			if($_POST['search']['value']){
+				if($i===0){
+					$this->db->group_start();
+					$this->db->like($item,$_POST['search']['value']);
+				} else {
+					$this->db->or_like($item, $_POST['search']['value']);
+				}
+
+				if(count($this->column_search_dosen) - 1 == $i){
+					$this->db->group_end();
+				}
+			}
+			$i++;
+		}
+
+		if(isset($_POST['order'])){
+			$this->db->order_by($this->column_order_dosen[$_POST['order']['0']['column']],$_POST['order']['0']['dir']);
+		} elseif (isset($this->order_by_dosen)) {
+			$order = $this->order_by_dosen;
+			$this->db->order_by(key($order),$order[key($order)]);
+		}
+	}
+
+	public function get_data_dosen($prodi = null, $dosen = null){
+		$this->_get_data_dosen($prodi, $dosen);
+		if($_POST['length'] != -1)
+			$this->db->limit($_POST['length'], $_POST['start']);
+		$query = $this->db->get();
+		return $query->result();
+	}
+
+	function count_filtered_data_dosen($prodi = null, $dosen = null){
+		$this->_get_data_dosen($prodi, $dosen);
+		$query = $this->db->get();
+		return $query->num_rows();
+	}
+
+	function count_all_data_dosen($prodi = null, $dosen = null){
+		$this->db->from($this->table_dosen);
+		$this->db->join('tb_jurusan','tb_dosen.fakjur = tb_jurusan.kode_jurusan');
+		if($prodi['fakjur'] !== 'pd' && $dosen['kode_dosen'] !== 'd'){
+			$this->db->where($prodi);
+			$this->db->where($dosen);
+		}elseif($prodi['fakjur'] !== 'pd'){
+			$this->db->where($prodi);
+		}else{
+
+		}
+		return $this->db->count_all_results();
+	}
+
 
 }
 

@@ -15,9 +15,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       		<header class="main-header">
       			<a href="<?php echo site_url('MP_Back');?>" class="logo">
 		          <!-- mini logo for sidebar mini 50x50 pixels -->
-		          <span class="logo-mini"><b>J</b>DA</span>
+		          <span class="logo-mini">FT</span>
 		          <!-- logo for regular state and mobile devices -->
-		          <span class="logo-lg"><b>Jadwal Dosen Untag</b></span>
+		          <span class="logo-lg"><b>Fakultas Teknik</b></span>
 		        </a>
 		        <nav class="navbar navbar-static-top" role="navigation">
 		          <!-- Sidebar toggle button-->
@@ -83,6 +83,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	                        		<i class="fa fa-book"></i> <span>Jadwal Bimbingan Dosen</span>
 	                        	</a>
 	                        </li>
+							<li class="icn_view_users">
+								<a href="<?php echo site_url('MP_Back/data_dosen')?>">
+									<i class="fa fa-book"></i> <span>Data Dosen</span>
+								</a>
+							</li>
+							<li class="icn_view_users">
+								<a href="<?php echo site_url('MP_Back/pengumuman')?>">
+									<i class="fa fa-book"></i> <span>Pengumuman</span>
+								</a>
+							</li>
 		         	</ul>
 		        </section> 
 		    </aside>
