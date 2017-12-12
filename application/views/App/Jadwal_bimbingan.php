@@ -15,6 +15,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	        <section class="content">
 				<div class="row">
                     <div class="col-xs-12">
+						<?php
+						if($sekarang['tahunajar'] === FALSE){
+							echo "<h4 class='text-danger'>Tidak ada tahun ajar yang diaktifkan</h4>";
+						}else{
+							echo "<h4>Tahun Ajaran ".$sekarang['tahun']." Semester ".$sekarang['semester']."</h4>";
+						}
+						?>
+					</div>
+                    <div class="col-xs-12">
                         <button class="btn btn-primary" id="tambah"><span class="fa fa-user-plus"></span>&nbsp;Tambah Jadwal</button>
                         <button class="btn btn-default" id="refresh"><span class="fa fa-refresh"></span>&nbsp;Refresh Tabel</button>
                     </div>

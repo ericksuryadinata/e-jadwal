@@ -3,11 +3,33 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class MP_Back extends CI_Controller {
 
+    private function _ambil_tanggal(){
+        $check_tahunajaran = $this->mp->ambil_satu('tb_tahunajar',array('status'=>1));
+        if($check_tahunajaran->num_rows() > 0){
+            $data['tahunajar'] = TRUE;
+            $res = $check_tahunajaran->row();
+            if($res){
+                $ta = $res->tahun_semester;
+                $split = str_split($ta,4);
+                $data['tahun'] = $split[0];
+                $smst = $split[1];
+                if($smst == 1)
+                    $data['semester'] = 'Ganjil';
+                else
+                    $data['semester'] = 'Genap';
+            }
+        }else{
+            $data['tahunajar'] = FALSE;
+        }
+
+        return $data;
+    }
     /** 
      *  jadwal dosen 
     **/
-
 	public function index(){
+
+        $data['sekarang'] = $this->_ambil_tanggal();
 		$data['pesan'] = $this->session->userdata('p');
 		$this->load->view('App/index',$data);
         $this->load->view('App/Jadwal');
@@ -127,6 +149,7 @@ class MP_Back extends CI_Controller {
     
     public function jadwal_tu(){
         $data['pesan'] = $this->session->userdata('p');
+        $data['sekarang'] = $this->_ambil_tanggal();
         $prodi = $this->mp->getAllProdi();
         if($prodi->num_rows() > 0){
             $data['jurusan'] = $prodi->result();
@@ -306,6 +329,7 @@ class MP_Back extends CI_Controller {
     **/
 
     public function jadwal_bimbingan(){
+        $data['sekarang'] = $this->_ambil_tanggal();
         $data['pesan'] = $this->session->userdata('p');
         $prodi = $this->mp->getAllProdi();
         if($prodi->num_rows() > 0){

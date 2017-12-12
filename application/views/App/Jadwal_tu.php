@@ -13,6 +13,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	        </section>
 	        <section class="content">
 				<div class="row">
+                    <div class="col-xs-12">
+						<?php
+						if($sekarang['tahunajar'] === FALSE){
+							echo "<h4 class='text-danger'>Tidak ada tahun ajar yang diaktifkan</h4>";
+						}else{
+							echo "<h4>Tahun Ajaran ".$sekarang['tahun']." Semester ".$sekarang['semester']."</h4>";
+						}
+						?>
+					</div>
 					<div class="col-xs-12">
 						<div class="box box-default">
 							<div class="box-header with-border">
