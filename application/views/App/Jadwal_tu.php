@@ -22,7 +22,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						}
 						?>
 					</div>
-					<div class="col-xs-12">
+					<div class="col-md-6 col-sm-6 col-xs-12">
 						<div class="box box-default">
 							<div class="box-header with-border">
 								<i class="fa fa-user-plus"></i>
@@ -33,9 +33,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								<?php echo form_open_multipart('MP_Back/upload_excel_tu','class="form-inline"')?>
 								<input name="btn" type="submit" class="btn btn-primary" value="Upload Jadwal Tata Usaha">
 								<div class="form-group">
-									<input class="form-control" type="file" name="file">
+									<input type="file" name="file">
 								</div>
 								<?php echo form_close()?>
+							</div>
+						</div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+						<div class="box box-default">
+							<div class="box-header with-border">
+								<i class="fa fa-user-plus"></i>
+								<h3 class="box-title">Download Template Excel Jadwal Tata Usaha</h3>
+							</div>
+							<div class="box-body">
+								<p>Gunakan fitur ini untuk Download Template Excel Jadwal Tata Usaha</p>
+								<a class="btn btn-primary" href="<?php echo site_url('Utama/download_jadwal_tu')?>" role="button">Download Template Excel &raquo;</a>
 							</div>
 						</div>
 					</div>

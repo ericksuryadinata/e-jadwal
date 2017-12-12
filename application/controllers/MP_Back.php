@@ -21,9 +21,21 @@ class MP_Back extends CI_Controller {
         }else{
             $data['tahunajar'] = FALSE;
         }
-
         return $data;
     }
+
+    public function download_jadwal_dosen(){
+        $this->TemplateExcel->template_jadwal_dosen();
+    }
+
+    public function download_jadwal_tu(){
+        $this->TemplateExcel->template_jadwal_tu();
+    }
+
+    public function download_data_dosen(){
+        $this->TemplateExcel->template_data_dosen();
+    }
+    
     /** 
      *  jadwal dosen 
     **/
