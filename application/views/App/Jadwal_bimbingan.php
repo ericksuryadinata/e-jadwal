@@ -31,6 +31,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											<th>Nama Dosen</th>
 											<th>Jadwal</th>
                                             <th>Ruang</th>
+                                            <th>Tahun Ajar - Semester</th>
                                             <th>Aksi</th>
 										</tr>
 									</thead>
@@ -122,6 +123,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 <span class="help-block"></span>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3">Tahun Ajar - Semester</label>
+                            <div class="col-md-9">
+                                <input name="tahunajar" id='tahunajar' placeholder="Contoh Pengisian : 20171" class="form-control" type="text" required>
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="submit" id="btnSave" class="btn btn-primary">Simpan</button>
@@ -150,7 +158,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             },
             columnDefs: [
                 { 
-                    targets: [ 0, 4, 5, -1 ],
+                    targets: [ 0, 4, 5, 6, -1 ],
                     orderable: false, 
                 },
             ],
@@ -334,6 +342,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 oid = data.id_jadwal_bimbingan;
                 $('[name="jam"]').val(data.jam);
                 $('[name="ruang"]').val(data.ruang);
+                $('[name="tahunajar"]').val(data.tahun_ajaran);
                 $('#bimbingan_modal').modal('show');
                 $('.modal-title').text('Edit Bimbingan');
             },

@@ -27,20 +27,21 @@ class Front_Model extends CI_Model {
 		$this->db->distinct();
 		$this->db->from($tabel);
 		$this->db->where($param);
+		$this->db->where('tahun_ajaran =(SELECT `tahun_semester` FROM `tb_tahunajar` WHERE `status` = 1) ',NULL,FALSE);
 		return $this->db->get();
 	}
 
 	public function getDosenDistinct($id){
 		if($id === 'pd'){
-			return $this->db->query("SELECT DISTINCT pengajar FROM (SELECT DISTINCT pengajar FROM tb_jadwal WHERE kode_jurusan = '' ) AS p ");	
+			return $this->db->query("SELECT DISTINCT pengajar FROM (SELECT DISTINCT pengajar FROM tb_jadwal WHERE kode_jurusan = '' AND tahun_ajaran = (SELECT `tahun_semester` FROM `tb_tahunajar` WHERE `status` = 1) ) AS p ");	
 		}else{
-			return $this->db->query("SELECT DISTINCT pengajar FROM (SELECT DISTINCT pengajar FROM tb_jadwal WHERE kode_jurusan = $id ) AS p ");	
+			return $this->db->query("SELECT DISTINCT pengajar FROM (SELECT DISTINCT pengajar FROM tb_jadwal WHERE kode_jurusan = $id AND tahun_ajaran = (SELECT `tahun_semester` FROM `tb_tahunajar` WHERE `status` = 1) ) AS p ");	
 		}
 	}
 
 	public function getDosen($table,$where = null){
 		$this->db->from($table);
-		$this->db->like($where);
+		$this->db->where($where);
 		return $this->db->get();
 	}
 
@@ -60,16 +61,20 @@ class Front_Model extends CI_Model {
 			$this->db->where($prodi);
 			$this->db->where($mk);
 			$this->db->where($dosen);
+			$this->db->where('tahun_ajaran =(SELECT `tahun_semester` FROM `tb_tahunajar` WHERE `status` = 1) ',NULL,FALSE);
 		}elseif($prodi['kode_jurusan'] !== 'pd' && $mk['kode_mk'] !== 'mk'){
 			$this->db->where($prodi);
 			$this->db->where($mk);
+			$this->db->where('tahun_ajaran =(SELECT `tahun_semester` FROM `tb_tahunajar` WHERE `status` = 1) ',NULL,FALSE);
 		}elseif($prodi['kode_jurusan'] !== 'pd' && $dosen['pengajar'] !== 'd'){
 			$this->db->where($prodi);
 			$this->db->where($dosen);
+			$this->db->where('tahun_ajaran =(SELECT `tahun_semester` FROM `tb_tahunajar` WHERE `status` = 1) ',NULL,FALSE);
 		}elseif($prodi['kode_jurusan'] !== 'pd'){
 			$this->db->where($prodi);
+			$this->db->where('tahun_ajaran =(SELECT `tahun_semester` FROM `tb_tahunajar` WHERE `status` = 1) ',NULL,FALSE);
 		}else{
-
+			$this->db->where('tahun_ajaran =(SELECT `tahun_semester` FROM `tb_tahunajar` WHERE `status` = 1) ',NULL,FALSE);
 		}
 		$i=0;
 		foreach ($this->column_search_jadwal as $item) {
@@ -116,16 +121,20 @@ class Front_Model extends CI_Model {
 			$this->db->where($prodi);
 			$this->db->where($mk);
 			$this->db->where($dosen);
+			$this->db->where('tahun_ajaran =(SELECT `tahun_semester` FROM `tb_tahunajar` WHERE `status` = 1) ',NULL,FALSE);
 		}elseif($prodi['kode_jurusan'] !== 'pd' && $mk['kode_mk'] !== 'mk'){
 			$this->db->where($prodi);
 			$this->db->where($mk);
+			$this->db->where('tahun_ajaran =(SELECT `tahun_semester` FROM `tb_tahunajar` WHERE `status` = 1) ',NULL,FALSE);
 		}elseif($prodi['kode_jurusan'] !== 'pd' && $dosen['pengajar'] !== 'd'){
 			$this->db->where($prodi);
 			$this->db->where($dosen);
+			$this->db->where('tahun_ajaran =(SELECT `tahun_semester` FROM `tb_tahunajar` WHERE `status` = 1) ',NULL,FALSE);
 		}elseif($prodi['kode_jurusan'] !== 'pd'){
 			$this->db->where($prodi);
+			$this->db->where('tahun_ajaran =(SELECT `tahun_semester` FROM `tb_tahunajar` WHERE `status` = 1) ',NULL,FALSE);
 		}else{
-
+			$this->db->where('tahun_ajaran =(SELECT `tahun_semester` FROM `tb_tahunajar` WHERE `status` = 1) ',NULL,FALSE);
 		}
 		return $this->db->count_all_results();
 	}
@@ -134,6 +143,7 @@ class Front_Model extends CI_Model {
 		$this->db->from($this->table_jadwal_tu);
 		$this->db->join('tb_jurusan','tb_jadwal_tu.fakjur = tb_jurusan.kode_jurusan');
 		$this->db->join('tb_tatausaha','tb_jadwal_tu.kode_tata_usaha = tb_tatausaha.kode_tu');
+		$this->db->where('tahun_ajaran =(SELECT `tahun_semester` FROM `tb_tahunajar` WHERE `status` = 1) ',NULL,FALSE);
 		$i=0;
 		foreach ($this->column_search_jadwal_tu as $item) {
 			if($_POST['search']['value']){
@@ -175,6 +185,9 @@ class Front_Model extends CI_Model {
 
 	function count_all_jadwal_tu(){
 		$this->db->from($this->table_jadwal_tu);
+		$this->db->join('tb_jurusan','tb_jadwal_tu.fakjur = tb_jurusan.kode_jurusan');
+		$this->db->join('tb_tatausaha','tb_jadwal_tu.kode_tata_usaha = tb_tatausaha.kode_tu');
+		$this->db->where('tahun_ajaran =(SELECT `tahun_semester` FROM `tb_tahunajar` WHERE `status` = 1) ',NULL,FALSE);
 		return $this->db->count_all_results();
 	}
 
@@ -186,10 +199,12 @@ class Front_Model extends CI_Model {
 		if($prodi['jurusan'] !== 'pd' && $dosen['dosen'] !== 'd'){
 			$this->db->where($prodi);
 			$this->db->where($dosen);
+			$this->db->where('tahun_ajaran =(SELECT `tahun_semester` FROM `tb_tahunajar` WHERE `status` = 1) ',NULL,FALSE);
 		}elseif($prodi['jurusan'] !== 'pd'){
 			$this->db->where($prodi);
+			$this->db->where('tahun_ajaran =(SELECT `tahun_semester` FROM `tb_tahunajar` WHERE `status` = 1) ',NULL,FALSE);
 		}else{
-
+			$this->db->where('tahun_ajaran =(SELECT `tahun_semester` FROM `tb_tahunajar` WHERE `status` = 1) ',NULL,FALSE);
 		}
 		$i=0;
 		foreach ($this->column_search_jadwal_bimbingan as $item) {
@@ -237,10 +252,12 @@ class Front_Model extends CI_Model {
 		if($prodi['jurusan'] !== 'pd' && $dosen['dosen'] !== 'd'){
 			$this->db->where($prodi);
 			$this->db->where($dosen);
+			$this->db->where('tahun_ajaran =(SELECT `tahun_semester` FROM `tb_tahunajar` WHERE `status` = 1) ',NULL,FALSE);
 		}elseif($prodi['jurusan'] !== 'pd'){
 			$this->db->where($prodi);
+			$this->db->where('tahun_ajaran =(SELECT `tahun_semester` FROM `tb_tahunajar` WHERE `status` = 1) ',NULL,FALSE);
 		}else{
-
+			$this->db->where('tahun_ajaran =(SELECT `tahun_semester` FROM `tb_tahunajar` WHERE `status` = 1) ',NULL,FALSE);
 		}
 		return $this->db->count_all_results();
 	}

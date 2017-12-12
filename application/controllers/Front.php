@@ -81,7 +81,7 @@ class Front extends CI_Controller {
             if($prodi === 'pd'){
                 echo json_encode(null);
             }else{
-                $dosen = $this->front->getDosen('tb_dosen',array('kode_dosen'=>$prodi));
+                $dosen = $this->front->getDosen('tb_dosen',array('fakjur'=>$prodi));
                 echo json_encode(array('dosen'=>$dosen->result_array()));
             }
         }else{

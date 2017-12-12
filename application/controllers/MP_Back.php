@@ -106,6 +106,12 @@ class MP_Back extends CI_Controller {
             $row[] = $jadwal->pengajar;
             $row[] = $jadwal->ruang;
             $row[] = $jadwal->peserta;
+            $tahundapat = str_split($jadwal->tahun_ajaran,4);
+            if($tahundapat[1] == 1){
+                $row[] = $tahundapat[0].' - Ganjil';
+            }else{
+                $row[] = $tahundapat[0].' - Genap';
+            }
             $data[] = $row;
         }
         $output = array("draw"=>$_POST['draw'],
@@ -212,6 +218,12 @@ class MP_Back extends CI_Controller {
             $hari = $jadwal_tu->hari;
             $jam = $jadwal_tu->jam;
             $row[] = $hari.', '.$jam;
+            $tahundapat = str_split($jadwal_tu->tahun_ajaran,4);
+            if($tahundapat[1] == 1){
+                $row[] = $tahundapat[0].' - Ganjil';
+            }else{
+                $row[] = $tahundapat[0].' - Genap';
+            }
             $row[] = '<a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Edit" onclick="update_jadwal_tu('."'".$jadwal_tu->id_jadwal_tu."'".')"><i class="glyphicon glyphicon-pencil"></i>&nbsp;Edit</a> <a class="btn btn-sm btn-danger" href="javascript:void(0)" title="Hapus" onclick="delete_jadwal_tu('."'".$jadwal_tu->id_jadwal_tu."'".')"><i class="glyphicon glyphicon-trash"></i>&nbsp;Delete</a>';
             $data[] = $row;
         }
@@ -241,6 +253,7 @@ class MP_Back extends CI_Controller {
         if($_POST){
             $data = array('fakjur'=>$this->security->xss_clean($this->input->post('prodi')),'kode_tata_usaha'=>$this->security->xss_clean($this->input->post('kodetu')),'hari'=>$this->security->xss_clean($this->input->post('hari')),
             'jam'=>$this->security->xss_clean($this->input->post('jam')),
+            'tahun_ajaran'=>$this->security->xss_clean($this->input->post('tahunajar'))
             );
             $insert = $this->mp->tambah_data('tb_jadwal_tu',$data);
             echo json_encode(array('status'=>TRUE));
@@ -253,6 +266,7 @@ class MP_Back extends CI_Controller {
         if($_POST){
             $data = array('fakjur'=>$this->security->xss_clean($this->input->post('prodi')),'kode_tata_usaha'=>$this->security->xss_clean($this->input->post('kodetu')),'hari'=>$this->security->xss_clean($this->input->post('hari')),
             'jam'=>$this->security->xss_clean($this->input->post('jam')),
+            'tahun_ajaran'=>$this->security->xss_clean($this->input->post('tahunajar'))
             );
             $where = array('id_jadwal_tu'=>$this->security->xss_clean($this->input->post('val')));
             $update = $this->mp->update_tu($where,$data);
@@ -348,6 +362,12 @@ class MP_Back extends CI_Controller {
             $jam = $jadwal_bimbingan->jam;
             $row[] = $hari.', '.$jam;
             $row[] = $jadwal_bimbingan->ruang;
+            $tahundapat = str_split($jadwal_bimbingan->tahun_ajaran,4);
+            if($tahundapat[1] == 1){
+                $row[] = $tahundapat[0].' - Ganjil';
+            }else{
+                $row[] = $tahundapat[0].' - Genap';
+            }
             $row[] = '<a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Edit" onclick="update_bimbingan('."'".$jadwal_bimbingan->id_jadwal_bimbingan."'".')"><i class="glyphicon glyphicon-pencil"></i>&nbsp;Edit</a> <a class="btn btn-sm btn-danger" href="javascript:void(0)" title="Hapus" onclick="delete_bimbingan('."'".$jadwal_bimbingan->id_jadwal_bimbingan."'".')"><i class="glyphicon glyphicon-trash"></i>&nbsp;Delete</a>';
             $data[] = $row;
         }
@@ -363,7 +383,8 @@ class MP_Back extends CI_Controller {
         if($_POST){
             $data = array('jurusan'=>$this->security->xss_clean($this->input->post('prodi')),'dosen'=>$this->security->xss_clean($this->input->post('kodedosen')),'hari'=>$this->security->xss_clean($this->input->post('hari')),
             'jam'=>$this->security->xss_clean($this->input->post('jam')),
-            'ruang'=>$this->security->xss_clean($this->input->post('ruang'))
+            'ruang'=>$this->security->xss_clean($this->input->post('ruang')),
+            'tahun_ajaran'=>$this->security->xss_clean($this->input->post('tahunajar'))
             );
             $insert = $this->mp->tambah_data('tb_jadwal_bimbingan',$data);
             echo json_encode(array('status'=>TRUE));
@@ -376,7 +397,8 @@ class MP_Back extends CI_Controller {
         if($_POST){
             $data = array('jurusan'=>$this->security->xss_clean($this->input->post('prodi')),'dosen'=>$this->security->xss_clean($this->input->post('kodedosen')),'hari'=>$this->security->xss_clean($this->input->post('hari')),
             'jam'=>$this->security->xss_clean($this->input->post('jam')),
-            'ruang'=>$this->security->xss_clean($this->input->post('ruang'))
+            'ruang'=>$this->security->xss_clean($this->input->post('ruang')),
+            'tahun_ajaran'=>$this->security->xss_clean($this->input->post('tahunajar'))
             );
             $where = array('id_jadwal_bimbingan'=>$this->security->xss_clean($this->input->post('val')));
             $update = $this->mp->update_bimbingan($where,$data);

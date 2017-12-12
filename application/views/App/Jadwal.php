@@ -50,6 +50,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											<th>Pengajar</th>
 											<th>Ruang</th>
 											<th>Peserta</th>
+											<th>Tahun Ajar - Semester</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -84,7 +85,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			},
 			columnDefs: [
 					{ 
-							targets: [ 0, -1 ],
+							targets: [ 0, 12, -1 ],
 							orderable: false, 
 					},
 			],
