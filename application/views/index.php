@@ -23,11 +23,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 </div>
             </section>
     
-            <div class="album text-muted">
+            <div class="album">
                 <div class="container">
                     <div class="row">
                         <div class="col-md-4 col-sm-4">
-                            <div class="card text-center" style="width: 20rem;">
+                            <div class="card text-center" style="width: 20rem;" id="jadwaldosen">
                                 <div class="card-body">
                                     <h4 class="card-title">Jadwal Dosen</h4>
                                     <p class="card-text">Jadwal Seluruh Dosen Fakultas Teknik Universitas 17 Agustus 1945 Surabaya</p>
@@ -38,7 +38,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             </div>
                         </div>
                         <div class="col-md-4 col-sm-4">
-                            <div class="card text-center" style="width: 20rem;">
+                            <div class="card text-center" style="width: 20rem;" id="jadwaltu">
                                 <div class="card-body">
                                     <h4 class="card-title">Jadwal Tata Usaha</h4>
                                     <p class="card-text">Jadwal Tata Usaha Fakultas Teknik Universitas 17 Agustus 1945 Surabaya</p>
@@ -49,7 +49,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             </div>
                         </div>
                         <div class="col-md-4 col-sm-4">
-                            <div class="card text-center" style="width: 20rem;">
+                            <div class="card text-center" style="width: 20rem;" id="jadwalbimbingan">
                                 <div class="card-body">
                                     <h4 class="card-title">Jadwal Bimbingan Dosen</h4>
                                     <p class="card-text">Jadwal Bimbingan Dosen Fakultas Teknik Universitas 17 Agustus 1945 Surabaya</p>
@@ -62,20 +62,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     </div>
                     <div class="row">
                         <div class="col-md-4 col-sm-4">
-                            <div class="card text-center" style="width: 20rem;">
-                                <a href="<?php echo base_url('front/data_dosen')?>">
-                                    <div class="card-body">
-                                        <h4 class="card-title">Data Dosen</h4>
-                                        <p class="card-text">Jadwal Data Dosen Fakultas Teknik Universitas 17 Agustus 1945 Surabaya</p>
-                                    </div>
-                                </a>
+                            <div class="card text-center" style="width: 20rem;" id="datadosen">
+                                <div class="card-body">
+                                    <h4 class="card-title">Data Dosen</h4>
+                                    <p class="card-text">Jadwal Data Dosen Fakultas Teknik Universitas 17 Agustus 1945 Surabaya</p>
+                                </div>
                                 <div class="card-footer">
                                     <a href="<?php echo base_url('front/data_dosen')?>" class="btn btn-primary">Lihat Data Dosen</a>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-4 col-sm-4">
-                            <div class="card text-center" style="width: 20rem;">
+                            <div class="card text-center" style="width: 20rem;" id="suratsurat">
                                 <div class="card-body">
                                     <h4 class="card-title">Surat - Surat</h4>
                                     <p class="card-text">Kumpulan Surat - Surat Fakultas Teknik Universitas 17 Agustus 1945 Surabaya</p>
@@ -86,7 +84,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             </div>
                         </div>
                         <div class="col-md-4 col-sm-4">
-                            <div class="card text-center" style="width: 20rem;">
+                            <div class="card text-center" style="width: 20rem;" id="keluhan">
                                 <div class="card-body">
                                     <h4 class="card-title">Keluhan</h4>
                                     <p class="card-text">Gunakan dengan bijak form pengaduan keluhan ini</p>
@@ -107,14 +105,41 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             </footer>
         </main>
         <?php $this->load->view('Partials/Front/Foot');?>
+        <script src="<?php echo base_url('assets/front/vendor/jquery.mobile/jquery.mobile-1.4.5.min.js');?>"></script>
         <script>
             var url ="http://localhost/pengumuman/pengumuman";
             $(document).idle({
                 onIdle: function(){
                     location.replace(url);
                 },
-                idle: 5000 //5 menit, default : 60000 [1m]
+                idle: 500000 //5 menit, default : 60000 [1m]
             });
+
+            $(document).ready(function () {
+                var jadwaldosen = [$("#jadwaldosen"),"front/jadwal_dosen"];
+                var jadwaltu = [$("#jadwaltu"),"front/jadwal_tu"];
+                var jadwalbimbingan = [$("#jadwalbimbingan"),"front/jadwal_bimbingan"];
+                var datadosen = [$("#datadosen"),"front/data_dosen"];
+                var surat = [$("#suratsurat"),"front/#"];
+                var keluhan = [$("#keluhan"),"front/#"];
+                var base = "<?php echo base_url()?>";
+                var styles = {cursor:"pointer"};
+                var content = [];
+                var url = [];
+
+
+                var menu = [jadwaldosen, jadwaltu, jadwalbimbingan, datadosen, surat, keluhan];
+
+                for(var i=0;i<menu.length;i++){
+                    content = menu[i][0];
+                    url = menu[i][1];
+                    content.css(styles);
+                    console.log(content);
+                    //location.replace(base+url);
+                }
+                
+            });
+
         </script>
       </body>
     </html>
