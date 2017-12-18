@@ -9,8 +9,8 @@ CHANGELOG
 7. chrome kiosk sudah OK
 8. Keyboard kiosk sudah OK
 9. Semua form setelah screen saver ke index sudah OK
+10. semua tombol pencet sudah full
 
 
 NOT YET
 1. semacam animasi, biar lebih atraktif, loader ? atau apa gitu ?
-2. Tombol pencet di home buat aja full
